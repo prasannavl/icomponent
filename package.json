@@ -1,6 +1,16 @@
 {
   "name": "litecomponent",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "dist/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "lit-html": "^0.13.0"
+  },
+  "scripts": {
+    "build": "babel ./lib -d dist"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/preset-env": "^7.1.5"
+  }
 }
