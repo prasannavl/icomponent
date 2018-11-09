@@ -132,9 +132,7 @@ class App extends LiteComponent {
   }
 }
 
-setInterval(() => {
-    document.getElementById(")
-})
+
 
 customElements.define("x-app", App);
 
@@ -372,11 +370,11 @@ No. For 2 reasons:
 For instance, 
 (https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L136, https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L146, https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L310) -- That's 3 Map allocations just for simply creating an element, not counting the other things it does for every component.
 
-If you have thousands of small components, that's not "ultralight weight". Don't mistake me, `lit-element` is a great project, but it has wrong claims, and I think things can be simplified much more providing most of its benefits, with a drastically simpler models closer to the DOM itself, most importantly avoiding the cognitive overhead of abstractions. 
+If you have thousands of small components, that's not "ultralight weight". Don't mistake me, `lit-element` is a great project, but it has wrong claims, and I think things can be simplified much more providing most of its benefits, with a drastically simpler models closer to the DOM itself, most importantly avoiding the cognitive overhead of abstractions.
 
 - **React, Vue, Angular?**
 
-I enjoyed React for a very long period of time, before getting fed up. A full fledged VDOM, while nice - isn't needed 90% of the time. The DOM does what it does very well, and VDOM is mostly just a useless overhead for a majority of the projects out there. For the other 10%, you're probably going to do a lot better, if you spend that time optimizing those parts instead of bending the logic to React's paradigm. And today, I think React is an over-engineered mess that brings about a lot of cognitive overhead - Context, Async rendering (you practically don't really need it with WebWorkers and a good architecture) and ever growing list of libraries and tooling, and development setup, born out of frustration of one, that all accomplish the same thing.
+I was a big fan of React for a very time, before being fed up with the cognitive overhead. A full fledged VDOM, while nice - isn't needed 90% of the time. The DOM does what it does very well, and VDOM is mostly just a useless overhead for a majority of the projects out there. For the other 10%, you're probably going to do a lot better, if you spend that time optimizing those parts instead of bending the logic to React's paradigm. And today, I think React is an over-engineered mess that brings about a lot of cognitive overhead - restrictive contexts, boilerplates, async rendering (you should almost never need it with WebWorkers and a good architecture) and ever growing list of libraries and tooling, and development setup, born out of frustration of one, that all accomplish the same thing.
 
 The problems React try to solve are nothing new, and have already been solved with different models for decades in the desktop GUI space that have stood the test of time. DOM is much closer to it today, than React.
 
