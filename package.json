@@ -1,16 +1,18 @@
 {
   "name": "litecomponent",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "es5/index.js",
   "license": "MIT",
   "dependencies": {
     "lit-html": "^0.13.0"
   },
   "scripts": {
-    "build": "babel ./lib -d dist"
+    "clean": "rimraf ./es5",
+    "build": "babel ./src -d es5"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
-    "@babel/preset-env": "^7.1.5"
+    "@babel/preset-env": "^7.1.5",
+    "rimraf": "^2.6.2"
   }
 }

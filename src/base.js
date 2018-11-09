@@ -1,6 +1,3 @@
-const requestAnimationFrame = window.requestAnimationFrame || setTimeout;
-const cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout;
-
 export class LiteElementBase extends HTMLElement {
     constructor() {
         super();
@@ -24,12 +21,12 @@ export class LiteElementBase extends HTMLElement {
 
     queueRender() {
         if (this.renderQueueToken !== null) return;
-        this.renderQueueToken = requestAnimationFrame(this.renderNow);
+        this.renderQueueToken = raf(this.renderNow);
     }
 
     clearRenderQueue() {
         if (this.renderQueueToken === null) return;
-        cancelAnimationFrame(this.renderQueueToken);
+        cancelRaf(this.renderQueueToken);
         this.renderQueueToken = null;
     }
 
@@ -61,3 +58,7 @@ export class LiteComponentBase extends LiteElementBase {
         super.unload();
     }
 }
+
+// We already assume HTMLElement, so it's makes so sense testing for window and such.
+const raf = window.requestAnimationFrame ? window.requestAnimationFrame : setTimeout;
+const cancelRaf = window.cancelAnimationFrame ? window.cancelAnimationFrame : clearTimeout;
