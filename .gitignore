@@ -1,4 +1,4 @@
 /node_modules
-/es5
+/dist
 /.cache
 yarn-error.log
