@@ -14,8 +14,7 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "babel ./lib -d dist",
-    "rollup": "rollup -c ./rollup.config.js",
-    "dist": "yarn run clean && yarn run build && yarn rollup",
+    "dist": "yarn run clean && yarn run build",
     "prepublishOnly": "yarn run dist"
   },
   "bugs": {
@@ -24,5 +23,11 @@
   "peerDependencies": {
     "icomponent": "^1.2.2",
     "lit-html": "^0.13.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/preset-env": "^7.1.5",
+    "rimraf": "^2.6.2"
   }
 }

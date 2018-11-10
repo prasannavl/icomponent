@@ -1,1 +1,1 @@
-export * from "icomponent/lib/utils";
+export { defineComponents, defineTag } from "icomponent";

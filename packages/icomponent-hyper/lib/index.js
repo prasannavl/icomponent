@@ -1,5 +1,4 @@
-import { render } from "lit-html";
-import { IElement as CoreIElement, IComponent as CoreIComponent, iFnComponentCore } from "icomponent/lib/base";
+import { IElement as CoreIElement, IComponent as CoreIComponent, iFnComponentCore } from "icomponent";
 
 export * from "./utils";
 export { bind, wire } from "hyperhtml";
