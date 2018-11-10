@@ -127,11 +127,11 @@ let nameIt = (attrs) => {
 }
 
 // registerTag is just for convenience. You can also simply use:
-// customElements.define("x-app", IFnComponent(App));
-registerTag("x-app", nameIt);
+// customElements.define("hello-component", IFnComponent(nameIt));
+registerTag("hello-component", nameIt);
 
 // HTML
-// <html><x-app name="Jane"></x-app></html>
+// <html><hello-component name="Jane"></hello-component></html>
 ```
 
 #### Timer
