@@ -1,6 +1,6 @@
 {
   "name": "icomponent",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "main": "dist/index.js",
   "module": "lib/index.js",
   "unpkg": "dist/index.bundle.js",
