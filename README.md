@@ -209,7 +209,10 @@ class App extends LiteComponent {
   }
 }
 
-// Oh yeah,
+// If you'd like attrChanged to be fired, you need to set observedProperties, as per the DOM spec for custom elements.
+// App.observedAttributes = ["value"];
+
+// Oh yeah, you can do this as well.
 App.tag = "x-app";
 
 register(App);
@@ -364,6 +367,10 @@ The default render function is a `noop`. You need to set `RenderManager.render`.
 I could have a default to something else like setting innerHTML, or mutate the DOM in some way. But this way, it's explicit as you you will never see your component render if you didn't set one so cannot be mistaken. You just need to do it once.
 
 Alternatively, you can also override `_render`, and write your own render logic.
+
+- **`changeAttrs` not fired**
+
+Set `YourComponent.observedAttributes = ["my", "attrs"];`, since Custom Elements are required to set that static property as per the DOM specifications. Please take a look at the custom elements API spec for more information. 
 
 - **Doesn't `lit-element` solve the same problem?**
 
