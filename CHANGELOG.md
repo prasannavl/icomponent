@@ -1,4 +1,12 @@
-v1.0.0:
+# v1.1.0:
+
+**Breaking**
+
+This is a minor, but breaking release, due to an immediate, small rename.
+
+- `IConfig` -> `IDefault` to better reflect intention.
+
+# v1.0.0:
 
 **Breaking**
 
@@ -10,7 +18,7 @@ v1.0.0:
 
 Everything else remains the same.
 
-v0.1.0:
+# v0.1.0:
 
 **Breaking**
 
@@ -27,7 +35,7 @@ v0.1.0:
   tree.
 
 
-v0.0.4:
+# v0.0.4:
 
 **Added**
 

@@ -26,9 +26,9 @@ It's exported under the name `icomponent`.
 ## Goals
 
 - Provide a full fledged minimal component abstraction with full render control, as stated in the project description.
-- JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Eventhough, `icomponent` has a core goal to stand on it's own, it's flexibility and minimal abstraction makes it ideal to be able to mix and match renderers, and use `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc side-by-side, package each of them as individual isolated and standards compliant web components in the same project, without worrying about one affecting the other.
+- JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Even though `icomponent` has a core goal to stand on it's own, it's flexibility and minimal abstraction makes it ideal to be able to mix and match renderers, and use `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc side-by-side, package each of them as individual isolated and standards compliant web components in the same project, without worrying about one affecting the other.
 - Do all of the above at no extra cost of performance, or cognitive overhead.
-- While you can do this right away by providing your own `render` logic, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as supported components in the future,  under the same project for a more seamless experience.
+- While you can do this right away by providing your own `render` logic, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as supported components in the future, under the same project for a more seamless experience.
 
 <!-- ##### -->
 
@@ -51,7 +51,7 @@ It's exported under the name `icomponent`.
 #### Basic
 
 ```js
-import { IComponent, IConfig } from "icomponent";
+import { IComponent, IDefault } from "icomponent";
 import { html, render } from "lit-html";
 
 // Set the render function. By default it's a noop.
@@ -62,7 +62,7 @@ import { html, render } from "lit-html";
 // return item of be rendered (return value of `view`), and the dom node itself.
 // lit-html render function is exactly the same.
 // Modify other appropriately, depending what you decide to return from the view.
-IConfig.render = render;
+IDefault.render = render;
 
 class App extends IComponent {
   view() {
@@ -113,6 +113,8 @@ class Nav extends LitHtmlComponent {
 
 
 #### Functional
+
+`IFnComponent` provides functional semantics. Functional components also automatically pass along the DOM attributes as arguments.
 
 ```js
 
@@ -299,16 +301,16 @@ Here's the `IElement`:
         this._postRender();
     }
 
-    // Queue a render using the IConfig scheduler.
+    // Queue a render using the IDefault scheduler.
     queueRender() {
         if (this.renderQueueToken !== null) return;
-        this.renderQueueToken = IConfig.schedule(this.renderNow);
+        this.renderQueueToken = IDefault.schedule(this.renderNow);
     }
 
-    // Clear any previously scheduled render using the IConfig scheduler.
+    // Clear any previously scheduled render using the IDefault scheduler.
     clearRenderQueue() {
         if (this.renderQueueToken === null) return;
-        IConfig.cancel(this.renderQueueToken);
+        IDefault.cancel(this.renderQueueToken);
         this.renderQueueToken = null;
     }
 
@@ -320,11 +322,11 @@ Here's the `IElement`:
     attributeChangedCallback(name, oldValue, newValue) { 
         this.attributeChanged(name, oldValue, newValue) }
 
-    // Default impl of render, delegated to the IConfig.
+    // Default impl of render, delegated to the IDefault.
     // This internal method can be overriden to provide custom render impls locally,
-    // while retaining the IConfig semantics globally.
+    // while retaining the IDefault semantics globally.
     _render() { 
-        IConfig.render(this.view(), this.getRenderRoot());
+        IDefault.render(this.view(), this.getRenderRoot());
     }
 
     _postRender() {
@@ -367,10 +369,10 @@ export class IComponent extends IElement {
 }
 ```
 
-And finally `IConfig` is just a simple object with that holds some useful defaults.
+And finally `IDefault` is just a simple object with that holds some useful defaults.
 
 ```js
-export const IConfig = function () {
+export const IDefault = function () {
     //  The default renderer, it's noop. Let the application provide
     // a renderer.
     let render = function (view, root) { };
@@ -396,7 +398,7 @@ That's it! You've almost read the entire source now. Cheers!
 
 - **Help. I don't see anything on the screen.** 
 
-The default render function is a `noop`. You need to set `IConfig.render`.
+The default render function is a `noop`. You need to set `IDefault.render`.
 One could argue that it could have a sensible default like setting innerHTML, or mutate the DOM with `appendChild`, etc. But this way, it's explicit and will simply not render. You just need to do it once.
 
 Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above. In the future, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as separate supported components.
