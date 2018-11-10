@@ -107,7 +107,7 @@ class App extends LiteComponent {
   // Note: connected does not mean the component is fully loaded. 
   // It just means it's connected to the DOM tree. But, if you desire
   // load semantics, just call renderNow to finish rendering immediately.
-  // Component are by default predictably lazy.
+  // Components are, by default 'predictably' lazy.
   connected() {
       super.connected();
 
@@ -118,8 +118,8 @@ class App extends LiteComponent {
       // The default algorithm uses requestAnimationFrame for scheduled renders.
       // So, doesn't matter how many times you call queueRender. It's coalesce them nicely.
       // But you can use `renderNow`, if you intend otherwise.
-      // Also, you can use `clearRenderQueue` at any point if you wish to cancel any scheduled
-      // renders.
+      // Also, you can use `clearRenderQueue` at any point if you wish to cancel
+      // any scheduled renders.
   }
 
   disconnected() {
@@ -135,7 +135,6 @@ class App extends LiteComponent {
     `;
   }
 }
-
 
 
 customElements.define("x-app", App);
@@ -372,6 +371,7 @@ I could have a default to something else like setting innerHTML, or mutate the D
 
 Alternatively, you can also override `_render`, and write your own render logic.
 
+
 - **`attributesChanged` not fired**
 
 Set `YourComponent.observedAttributes = ["my", "attrs"];`, since Custom Elements are required to set that static property as per the DOM specifications. Please take a look at the custom elements API spec for more information. 
@@ -379,8 +379,8 @@ Set `YourComponent.observedAttributes = ["my", "attrs"];`, since Custom Elements
 - **Element not yet rendered inside the `connected` method**
 
 The connected callback does not imply loaded. It just implies that the component is now in the DOM tree. So, if a render
-is desired before any other action is performed. Simply call `renderNow`, which will immediate finish rendering. 
-The default action of connected, is to `queueRender`, so that a render is performed, but the component will not be loaded inside the connected method itself.
+is desired before any other action is performed, simply call `renderNow` which will immediately finish rendering. 
+The default action of connected is to `queueRender`, so that a render is performed, but the component will not be loaded by the time connected method is called.
 
 This provides the advantage of being lazy, and having the flexibility to act both ways.
 
@@ -397,6 +397,7 @@ For instance,
 (https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L136, https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L146, https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L310) -- That's 3 Map allocations just for simply creating an element, not counting the other things it does for every component.
 
 If you have thousands of small components, that's not "ultralight weight". Don't mistake me, `lit-element` is a great project, but it has wrong claims, and I think things can be simplified much more providing most of its benefits, with a drastically simpler model closer to the DOM itself, most importantly avoiding the cognitive overhead of abstractions.
+
 
 - **React, Vue, Angular?**
 
