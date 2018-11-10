@@ -22,7 +22,7 @@
   },
   "peerDependencies": {
     "hyperhtml": "^2.16.4",
-    "icomponent": "^1.2.2"
+    "icomponent": "^1.2.9"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
