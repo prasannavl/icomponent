@@ -13,7 +13,7 @@ export class IElement extends CoreIElement {
     }
 
     _render() {
-        if (this._hyperRoot !== null) {
+        if (this._hyperRoot === null) {
             this._hyperRoot = bind(this.getRenderRoot());
         }
         this._hyperRoot(...this.view());
@@ -27,7 +27,7 @@ export class IComponent extends CoreIComponent {
     }
 
     _render() {
-        if (this._hyperRoot !== null) {
+        if (this._hyperRoot === null) {
             this._hyperRoot = bind(this.getRenderRoot());
         }
         this._hyperRoot(...this.view());
