@@ -1,3 +1,15 @@
+# v1.2.0:
+
+**Breaking**
+
+This is a minor, but breaking release, due to an immediate, small rename.
+
+- `registerTag` -> `defineTag`
+- `register` -> `defineComponents`
+
+To stay closer to standard `customElements.define` naming conventions.
+
+
 # v1.1.0:
 
 **Breaking**

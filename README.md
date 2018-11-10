@@ -1,5 +1,7 @@
 # icomponent
 
+(Formerly, litecomponent)
+
 A renderer-agnostic ultralight weight `CustomElement` for the modern web, that provides Component semantics with the highest possible performance, highest possible flexibility, lowest possible cognitive and abstractive overhead, depending only on the web-component standard with <1KB size (more like 800 bytes gzipped, really).
 
 ## Installation
@@ -126,9 +128,9 @@ let nameIt = (attrs) => {
     `;
 }
 
-// registerTag is just for convenience. You can also simply use:
+// defineTag is just for convenience. You can also simply use:
 // customElements.define("hello-component", IFnComponent(nameIt));
-registerTag("hello-component", nameIt);
+defineTag("hello-component", nameIt);
 
 // HTML
 // <html><hello-component name="Jane"></hello-component></html>
@@ -248,7 +250,7 @@ class App extends IComponent {
 // Oh yeah, you can do this as well.
 App.tag = "x-app";
 
-register(App);
+defineComponents(App);
 
 ```
 
