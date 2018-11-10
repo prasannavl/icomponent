@@ -1,4 +1,5 @@
 import { IElement as CoreIElement, IComponent as CoreIComponent, iFnComponentCore } from "icomponent";
+import { bind } from "hyperhtml";
 
 export * from "./utils";
 export { bind, wire } from "hyperhtml";

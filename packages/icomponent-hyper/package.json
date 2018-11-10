@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "module": "lib/index.js",
-  "unpkg": "dist/index.dist.js",
+  "unpkg": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prasannavl/icomponent.git"
