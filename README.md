@@ -104,10 +104,6 @@ class Nav extends LitHtmlComponent {
 #### Functional
 
 ```js
-import { html, render } from "lit-html";
-import { LiteFn, RenderManager, registerTag } from "litecomponent";
-
-RenderManager.render = render;
 
 let nameIt = (attrs) => {
     // attrs is the actual attributes object
@@ -128,10 +124,6 @@ registerTag("x-app", nameIt);
 #### Timer
 
 ```js
-import { html, render } from "lit-html";
-import { LiteComponent, RenderManager } from "litecomponent";
-
-RenderManager.render = render;
 
 class App extends LiteComponent {
   constructor() {
@@ -171,20 +163,11 @@ class App extends LiteComponent {
   }
 }
 
-
-customElements.define("x-app", App);
-
-// HTML
-// <html><x-app name="value"></x-app></html>
 ```
 
 #### Simple state management
 
 ```js
-import { html, render } from "lit-html";
-import { LiteComponent, RenderManager, register } from "litecomponent";
-
-RenderManager.render = render;
 
 class App extends LiteComponent {
   constructor() {
@@ -254,8 +237,6 @@ App.tag = "x-app";
 
 register(App);
 
-// HTML
-// <html><x-app></x-app></html>
 ```
 
 ### API
