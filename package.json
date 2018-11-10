@@ -1,6 +1,6 @@
 {
   "name": "litecomponent",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "dist/index.js",
   "module": "lib/index.js",
   "unpkg": "dist/index.bundle.js",
@@ -10,7 +10,8 @@
     "clean": "rimraf ./dist",
     "build": "babel ./lib -d dist",
     "rollup": "rollup -c ./rollup.config.js",
-    "dist": "yarn run clean && yarn run build && yarn rollup"
+    "dist": "yarn run clean && yarn run build && yarn rollup",
+    "prepublishOnly": "yarn run dist"
   },
   "repository": {
     "type": "git",
