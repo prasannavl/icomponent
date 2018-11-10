@@ -17,7 +17,15 @@
     "type": "git",
     "url": "https://github.com/prasannavl/icomponent.git"
   },
-  "keywords": [ "web component", "custom elements", "web", "html5", "performance", "minimal", "render" ],
+  "keywords": [
+    "web component",
+    "custom elements",
+    "web",
+    "html5",
+    "performance",
+    "minimal",
+    "render"
+  ],
   "bugs": {
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
