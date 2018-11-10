@@ -26,7 +26,7 @@ It's exported under the name `litecomponent`.
 ## Goals
 
 - Provide a full fledged minimal component abstraction with full render control, as stated in the project description.
-- JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Provide a means to be able to mix and match renderers, and be able to use things like `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc and package each of them as individual isolated and standards compliant web components in the same project without worrying about one affecting the other.
+- JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Eventhough, `litecomponent` has a core goal to stand on it's own, it's flexibility and minimal abstraction makes it ideal to be able to mix and match renderers, and use `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc side-by-side, package each of them as individual isolated and standards compliant web components in the same project, without worrying about one affecting the other.
 - Do all of the above at no extra cost of performance, or cognitive overhead.
 - While you can do this right away by providing your own `render` logic, I'd like to consider maintaining components like `LitHtmlComponent`, `HyperHtmlComponent`, `ReactLiteComponent` as supported components in the future,  under the same project for a more seamless experience.
 
