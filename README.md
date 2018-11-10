@@ -1,18 +1,19 @@
 # litecomponent
 
-An ultralight weight HTML5 Custom Element for the modern web, that provides Component semantics with the highest possible performance, highest possible flexibility, lowest possible cognitive and abstractive overhead, depending only on the W3C standard with < 1KB size (more like 800 bytes gzipped, really).
+An ultralight weight `CustomElement` for the modern web, that provides Component semantics with the highest possible performance, highest possible flexibility, lowest possible cognitive and abstractive overhead, depending only on the web-component standard with <1KB size (more like 800 bytes gzipped, really).
 
 In other words, it saves you a lot of time and headache, being super simple to learn and use, while staying future-proof.
 
+## Installation
 
-### NPM
+#### NPM
 ```
 npm install litecomponent
 ```
 
 It's provides both es6 modules, that can be accessed as `litecomponent/lib`, or cjs by default. Has `pkg.module` defined for es6 bundlers, like webpack. So feel free to just use `litecomponent`.
 
-### Unpkg
+#### Unpkg
 
 To use directly, in the browser.
 
@@ -22,11 +23,11 @@ To use directly, in the browser.
 
 It's exported under the name `litecomponent`.
 
-### Features
+## Features
 
 - It's super simple, and tiny. Read the source.
 - It's render agnostic. Define your own render logic, if you need, but it has the boilerplate.
-- It's view agnostic. Define your views in `lit-html`, `hyperhtml`, `jsx`, `document.createElement`, or even simple html strings:  Your call. (I highly recommend, and personally use `lit-html` or `hyperhtml`).
+- It's view agnostic. Define your views in `lit-html`, `hyperhtml`, `jsx`, `document.createElement`, or even simple html strings:  Your call. (I highly recommend `lit-html` or `hyperhtml`). You can even use React, or Vue's renderer if full VDOM is your thing, better yet - you can use them all in the same application.
 - Zero dependencies. Though you probably want to pair it with one of the above.
 - It only uses W3C standards, and simply builds off Custom Elements API.
 - Provides an extremely simple Elm like `suggestion` for dealing with state, but it's really upto to you.
@@ -39,8 +40,8 @@ It's exported under the name `litecomponent`.
 #### Basic
 
 ```js
-import { html, render } from "lit-html";
 import { LiteComponent, RenderManager } from "litecomponent";
+import { html, render } from "lit-html";
 
 // Set the render function. By default it's a noop.
 // Set it only once per application, or alternatively, 
@@ -66,6 +67,39 @@ customElements.define("x-app", App);
 // <html><x-app></x-app></html>
 ```
 
+#### Same as above using localized render.
+
+```js
+import { LiteComponent } from "litecomponent";
+import { html, render } from "lit-html";
+
+class LitHtmlComponent extends LiteComponent {
+   // Override this function to change any rendering logic.
+   // This can use hyperhtml, React, Vue, or any custom logic
+   // as desired.
+    _render() {
+        render(this.view(), this.getRenderRoot());
+    }
+}
+
+class App extends LitHtmlComponent {
+    view() {
+        return html`
+        <my-nav></my-nav>
+        <div>Hello world!</div>
+        `;
+    }
+}
+
+class Nav extends LitHtmlComponent {
+    view() {
+        return html`
+        <nav>Oo, my nav!</nav>
+        `;
+    }
+}
+```
+
 
 #### Functional
 
@@ -76,6 +110,8 @@ import { LiteFn, RenderManager, registerTag } from "litecomponent";
 RenderManager.render = render;
 
 let nameIt = (attrs) => {
+    // attrs is the actual attributes object
+    // given out by the DOM. (HTMLElement.attributes)
     return html`
     <div>Hello ${attrs.name.value}!</div>
     `;
@@ -86,7 +122,7 @@ let nameIt = (attrs) => {
 registerTag("x-app", nameIt);
 
 // HTML
-// <html><x-app name="value"></x-app></html>
+// <html><x-app name="Jane"></x-app></html>
 ```
 
 #### Timer
@@ -113,18 +149,17 @@ class App extends LiteComponent {
 
       this.timerHandle = setInterval(() => {
          this.time = new Date();
-         this.queueRender();
-      }, 100);
+
       // The default algorithm uses requestAnimationFrame for scheduled renders.
-      // So, doesn't matter how many times you call queueRender. It's coalesce them nicely.
-      // But you can use `renderNow`, if you intend otherwise.
+      // So, doesn't matter how many times you call queueRender. It coalesces them as
+      // expected. But you can use `renderNow`, if you intend otherwise.
       // Also, you can use `clearRenderQueue` at any point if you wish to cancel
       // any scheduled renders.
+         this.queueRender();
+      }, 100);
   }
 
   disconnected() {
-      // I wonder why most examples don't have this. Always clean up after yourself!
-      // I'm not going to make this example smaller encouraging horrible coding styles.
       clearInterval(this.timerHandle);
       super.disconnected();
   }
@@ -180,8 +215,6 @@ class App extends LiteComponent {
   }
 
   disconnected() {
-      // I wonder why most examples don't have this. Always clean up after yourself!
-      // I'm not going to make this example smaller encouraging horrible coding styles.
       clearInterval(this.timerHandle);
       super.disconnected();
   }
@@ -212,7 +245,8 @@ class App extends LiteComponent {
   }
 }
 
-// If you'd like attrChanged to be fired, you need to set observedProperties, as per the DOM spec for custom elements.
+// If you'd like attrChanged to be fired, you need to set observedProperties,
+// as per the DOM spec for custom elements.
 // App.observedAttributes = ["value"];
 
 // Oh yeah, you can do this as well.
@@ -289,7 +323,8 @@ Here's the `LiteElement`:
     connectedCallback() { this.connected() }
     disconnectedCallback() { this.disconnected() }
     adoptedCallback() { this.adopted() }
-    attributeChangedCallback(name, oldValue, newValue) { this.attributeChanged(name, oldValue, newValue) }
+    attributeChangedCallback(name, oldValue, newValue) { 
+        this.attributeChanged(name, oldValue, newValue) }
 
     // Default impl of render, delegated to the RenderManager.
     // This internal method can be overriden to provide custom render impls locally,
@@ -383,25 +418,4 @@ is desired before any other action is performed, simply call `renderNow` which w
 The default action of connected is to `queueRender`, so that a render is performed, but the component will not be loaded by the time connected method is called.
 
 This provides the advantage of being lazy, and having the flexibility to act both ways.
-
-
-- **Doesn't `lit-element` solve the same problem?**
-
-No. For 2 reasons:
-
-- First, it isn't view or renderer agnostic. `lit-html` is a fantastic project which I use all the time. But not `lit-element`. Its very well designed as well. I'd probably use it if I didn't write `litecomponent`. 
-
-- Two: The good folks at polymer and I have completely different perspectives of what `ultralight` is. The `lit-element` project title claims it is so. But if you look at the source, every element allocates a bunch of things, and does quite a bit compared to litecomponent. While it probably is lightweight compared to many other solutions, the Rustacean in me laughs when I read `ultralight` weight -- One should probably file a bug for it's claim. It's lightweight, but that doesn't fit my definition of ultralight weight.
-
-For instance, 
-(https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L136, https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L146, https://github.com/Polymer/lit-element/blob/master/src/lib/updating-element.ts#L310) -- That's 3 Map allocations just for simply creating an element, not counting the other things it does for every component.
-
-If you have thousands of small components, that's not "ultralight weight". Don't mistake me, `lit-element` is a great project, but it has wrong claims, and I think things can be simplified much more providing most of its benefits, with a drastically simpler model closer to the DOM itself, most importantly avoiding the cognitive overhead of abstractions.
-
-
-- **React, Vue, Angular?**
-
-Being a big fan of React for a very time, before being fed up with the cognitive overhead, some of the realizations were a full fledged VDOM, while nice - isn't needed 90% of the time. The DOM does what it does very well, and VDOM is mostly just a useless overhead for a majority of the projects out there. For the other 10%, you can actually get results way better than with React, spending that time optimizing those parts instead of bending the logic to React's paradigm, which is in many cases the opposite of the DOM's paradigm. And today, I think React is an over-engineered mess that brings about a lot of cognitive overhead - restrictive contexts, boilerplates, async rendering (you should almost never need it with WebWorkers and a good architecture) and ever growing list of libraries and tooling, and development setup, born out of frustration of one, that all accomplish the same thing.
-
-The problems React try to solve are nothing new, and have already been solved with different models for decades in the desktop GUI space that have stood the test of time. DOM is much closer to it today, than React.
 
