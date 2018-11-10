@@ -114,9 +114,9 @@ export class IComponent extends IElement {
 // IComponent. Note that this has one additional behavior, 
 // where it passes in the actual DOM attributes as 
 // arguments to the functions.
-export function IFnComponent(fn) {
+export function iFnComponentCore(fn, BaseClass) {
     if (!fn) throw new TypeError("invalid fn");
-    return class extends IElement {
+    return class extends BaseClass {
         connected() {
             // Render immediately instead of queuing so the first
             // view is immediately materialized.
@@ -127,6 +127,8 @@ export function IFnComponent(fn) {
         }
     }
 }
+
+export function IFnComponent(fn) { return iFnComponentCore(fn, IElement); }
 
 export const IDefault = function () {
     //  The default renderer, it's noop. Let the application provide

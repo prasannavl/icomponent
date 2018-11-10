@@ -1,34 +1,10 @@
 {
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "name": "icomponent",
-  "version": "1.2.0",
-  "main": "dist/index.js",
-  "module": "lib/index.js",
-  "unpkg": "dist/index.bundle.js",
-  "author": "Prasanna V. Loganathar <pvl@prasannavl.com> (https://www.prasannavl.com)",
-  "license": "MIT",
-  "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "babel ./lib -d dist",
-    "rollup": "rollup -c ./rollup.config.js",
-    "dist": "yarn run clean && yarn run build && yarn rollup",
-    "prepublishOnly": "yarn run dist"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/prasannavl/icomponent.git"
-  },
-  "keywords": [ "web component", "custom elements", "web", "html5", "performance", "minimal", "render" ],
-  "bugs": {
-    "url": "https://github.com/prasannavl/icomponent/issues"
-  },
-  "homepage": "https://github.com/prasannavl/icomponent",
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.1.5",
-    "@babel/preset-env": "^7.1.5",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.67.0",
-    "rollup-plugin-filesize": "^5.0.1",
-    "rollup-plugin-terser": "^3.0.0"
+    "lerna": "^3.4.3"
   }
 }

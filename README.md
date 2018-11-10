@@ -7,6 +7,7 @@ A renderer-agnostic ultralight weight `CustomElement` for the modern web, that p
 ## Installation
 
 #### NPM
+
 ```
 npm install icomponent
 ```
