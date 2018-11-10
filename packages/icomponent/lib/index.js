@@ -1,2 +1,2 @@
 export { IElement, IComponent, IFnComponent, IDefault } from "./base";
-export * from "./util";
+export * from "./utils";
