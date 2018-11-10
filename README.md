@@ -16,8 +16,8 @@ It provides both es6 modules, that can be accessed as `icomponent/lib`, or cjs b
 
 ## Currently supported adaptors
 
-- `icomponent-lit`: `lit-html` implementation
-- `icomponent-hyper`: `hyperhtml` implementation
+- `icomponent-lit` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-lit)]: [lit-html](https://github.com/Polymer/lit-html) implementation
+- `icomponent-hyper`[[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-hyper)]: [hyperhtml](https://github.com/WebReflection/hyperHTML)
 
 Install the above npm packages directly, if you prefer not to use your own renderer. They generally include the upstream package as well as `icomponent` as `peer dependencies`.
 
