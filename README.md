@@ -383,14 +383,14 @@ That's it! You've almost read the entire source now. Cheers!
 
 <!-- ### -->
 
-## Misc
+## FAQ
 
 - **Help. I don't see anything on the screen.** 
 
 The default render function is a `noop`. You need to set `RenderManager.render`.
-I could have a default to something else like setting innerHTML, or mutate the DOM in some way. But this way, it's explicit as you you will never see your component render if you didn't set one so cannot be mistaken. You just need to do it once.
+One could argue that it could have a sensible default like setting innerHTML, or mutate the DOM with `appendChild`, etc. But this way, it's explicit and will simply not render. You just need to do it once.
 
-Alternatively, you can also override `_render`, and write your own render logic.
+Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above. In the future, I'd like to consider maintaining components like `LitHtmlComponent`, `HyperHtmlComponent`, `ReactLiteComponent` as separate supported packages.
 
 
 - **`attributesChanged` not fired**
