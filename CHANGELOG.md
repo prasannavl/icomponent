@@ -1,3 +1,20 @@
+v2.0:
+
+**Breaking**
+
+- The following methods have been renamed while retaining the same 
+  semantics. 
+
+  - `load` -> `connected`
+  - `unload` -> `disconnected`
+  - `attrChanged` -> `attributeChanged`
+
+  This has been done to not only stay in line with DOM spec, but also
+  to avoid misconceptions due to the name such as `load`. connected does not
+  mean the component is fully loaded. It just means it's connected to the DOM
+  tree.
+
+
 v1.0.4:
 
 **Added**

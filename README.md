@@ -104,8 +104,12 @@ class App extends LiteComponent {
       this.timerHandle = null;
   }
 
-  load() {
-      super.load();
+  // Note: connected does not mean the component is fully loaded. 
+  // It just means it's connected to the DOM tree. But, if you desire
+  // load semantics, just call renderNow to finish rendering immediately.
+  // Component are by default predictably lazy.
+  connected() {
+      super.connected();
 
       this.timerHandle = setInterval(() => {
          this.time = new Date();
@@ -118,11 +122,11 @@ class App extends LiteComponent {
       // renders.
   }
 
-  unload() {
+  disconnected() {
       // I wonder why most examples don't have this. Always clean up after yourself!
       // I'm not going to make this example smaller encouraging horrible coding styles.
       clearInterval(this.timerHandle);
-      super.unload();
+      super.disconnected();
   }
 
   view() {
@@ -162,8 +166,8 @@ class App extends LiteComponent {
       this.renderNow();
   }
 
-  load() {
-      super.load();
+  connected() {
+      super.connected();
 
       this.timerHandle = setInterval(() => {
          this.dispatch("tick", new Date());
@@ -176,11 +180,11 @@ class App extends LiteComponent {
       this.clearRenderQueue();
   }
 
-  unload() {
+  disconnected() {
       // I wonder why most examples don't have this. Always clean up after yourself!
       // I'm not going to make this example smaller encouraging horrible coding styles.
       clearInterval(this.timerHandle);
-      super.unload();
+      super.disconnected();
   }
 
   update(msg, val) {
@@ -240,12 +244,12 @@ Here's the `LiteElement`:
     // When element is a part of the DOM tree.
     // called by connectedCallback. Default action is to queue a 
     // render.
-    load() { this.queueRender(); }
+    connected() { this.queueRender(); }
     
     // When element is removed from the DOM tree.
     // called by disconnectedCallback. Default action is to clear any 
     // scheduled renders.
-    unload() { this.clearRenderQueue(); }
+    disconnected() { this.clearRenderQueue(); }
     
     // Called by adoptedCallback. Default action is to queue a 
     // render.
@@ -253,7 +257,7 @@ Here's the `LiteElement`:
 
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
-    attrChanged(name, oldVal, newVal) { this.queueRender(); }
+    attributeChanged(name, oldVal, newVal) { this.queueRender(); }
 
     // Provide the root for the rendering. By default, it provides back the 
     // element itself (self). If a Shadow DOM is used/needed, then this
@@ -283,10 +287,10 @@ Here's the `LiteElement`:
 
     /// Lifecycle connections
 
-    connectedCallback() { this.load() }
-    disconnectedCallback() { this.unload() }
+    connectedCallback() { this.connected() }
+    disconnectedCallback() { this.disconnected() }
     adoptedCallback() { this.adopted() }
-    attributeChangedCallback(name, oldValue, newValue) { this.attrChanged(name, oldValue, newValue) }
+    attributeChangedCallback(name, oldValue, newValue) { this.attributeChanged(name, oldValue, newValue) }
 
     // Default impl of render, delegated to the RenderManager.
     // This internal method can be overriden to provide custom render impls locally,
@@ -368,9 +372,18 @@ I could have a default to something else like setting innerHTML, or mutate the D
 
 Alternatively, you can also override `_render`, and write your own render logic.
 
-- **`changeAttrs` not fired**
+- **`attributesChanged` not fired**
 
 Set `YourComponent.observedAttributes = ["my", "attrs"];`, since Custom Elements are required to set that static property as per the DOM specifications. Please take a look at the custom elements API spec for more information. 
+
+- **Element not yet rendered inside the `connected` method**
+
+The connected callback does not imply loaded. It just implies that the component is now in the DOM tree. So, if a render
+is desired before any other action is performed. Simply call `renderNow`, which will immediate finish rendering. 
+The default action of connected, is to `queueRender`, so that a render is performed, but the component will not be loaded inside the connected method itself.
+
+This provides the advantage of being lazy, and having the flexibility to act both ways.
+
 
 - **Doesn't `lit-element` solve the same problem?**
 
