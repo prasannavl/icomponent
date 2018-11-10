@@ -22,7 +22,7 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "peerDependencies": {
-    "icomponent": "^1.2.2",
-    "hyperhtml": "^2.16.4"
+    "hyperhtml": "^2.16.4",
+    "icomponent": "^1.2.2"
   }
 }
