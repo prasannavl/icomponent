@@ -14,15 +14,30 @@ npm install icomponent
 
 It provides both es6 modules, that can be accessed as `icomponent/lib`, or cjs by default. Has `pkg.module` defined for es6 bundlers, like webpack. So feel free to just use `icomponent`.
 
+## Currently supported adaptors
+
+- `icomponent-lit`: `lit-html` implementation
+- `icomponent-hyper`: `hyperhtml` implementation
+
+Install the above npm packages directly, if you prefer not to use your own renderer. They generally include the upstream package as well as `icomponent` as `peer dependencies`.
+
+All of the above packages provide an exact interface as `icomponent`. That is, `icomponent` exports `IComponent` that has a no-op renderer by default that can configured with `IDefault`. `icomponent-lit` provides `IComponent` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
+
+They also usually re-export some handy ones from the upstream packages for convenience. The component specific README should have more information. 
+
+Other adaptors like `React`, `Inferno`, `CycleJs` etc, should be very easy to write, but I haven't got around to doing it yet.
+
 #### Unpkg
 
 To use directly, in the browser.
 
 ```js
-<script src="https://unpkg.com/icomponent@latest/dist/index.bundle.js"></script>
+<script type="module">
+  import { IComponent, defineTag } from 'https://unpkg.com/icomponent@latest/lib/index.js';
+</script>
 ```
 
-It's exported under the name `icomponent`.
+For implementation specific packages, you need to have the correct packages in scope as well. You're generally better off using npm/yarn or Code Sandbox for live playground.
 
 <!-- ##### -->
 
@@ -31,7 +46,7 @@ It's exported under the name `icomponent`.
 - Provide a full fledged minimal component abstraction with full render control, as stated in the project description.
 - JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Even though `icomponent` has a core goal to stand on it's own, it's flexibility and minimal abstraction makes it ideal to be able to mix and match renderers, and use `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc side-by-side, package each of them as individual isolated and standards compliant web components in the same project, without worrying about one affecting the other.
 - Do all of the above at no extra cost of performance, or cognitive overhead.
-- While you can do this right away by providing your own `render` logic, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as supported components in the future, under the same project for a more seamless experience.
+- While you can do this right away by providing your own `render` logic, and there are some supported adaptors mentioned above, I'd like to add more, as time permits under the same project for a more seamless experience.
 
 <!-- ##### -->
 
@@ -52,6 +67,35 @@ It's exported under the name `icomponent`.
 ## Examples
 
 #### Basic
+
+Using `icomponent-lit` or `icomponent-hyper`
+
+```js
+// Both these adaptors use the exact same code. Use
+// whichever you prefer and comment the other. 
+
+// import { IComponent, html } from "icomponent-lit";
+import { IComponent, html } from "icomponent-hyper";
+
+class App extends IComponent {
+  view() {
+        return html`
+        <div>Hello world!</div>
+        `;
+    }
+}
+
+customElements.define("x-app", App);
+
+// HTML
+// <html><x-app></x-app></html>
+```
+
+**Note:** `icomponent-hyper` also exports hyper's `bind` and `wire`. `html` is a convenience export to retain similar semantics between hyper and lit-html.
+
+#### Basic without any adaptors
+
+This is the same one, using `lit-html`, but without any adaptors, overriding the default renderer.
 
 ```js
 import { IComponent, IDefault } from "icomponent";
@@ -81,7 +125,10 @@ customElements.define("x-app", App);
 // <html><x-app></x-app></html>
 ```
 
-#### Same as above using localized render.
+#### Basic using localized render
+
+Same as the above, but without using any adaptor, or overriding the default renderer.
+This implementation is also similar to what the adaptors do internally.
 
 ```js
 import { IComponent } from "icomponent";
@@ -401,10 +448,17 @@ That's it! You've almost read the entire source now. Cheers!
 
 - **Help. I don't see anything on the screen.** 
 
-The default render function is a `noop`. You need to set `IDefault.render`.
+The default render function is a `noop`.  
+
+You have 3 options: 
+
+- Use one of the adaptor packages directly
+- Set `IDefault.render` 
+- Implement `_render`
+
 One could argue that it could have a sensible default like setting innerHTML, or mutate the DOM with `appendChild`, etc. But this way, it's explicit and will simply not render. You just need to do it once.
 
-Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above. In the future, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as separate supported components.
+Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above.
 
 
 - **`attributesChanged` not fired**
