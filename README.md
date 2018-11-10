@@ -1,8 +1,6 @@
 # litecomponent
 
-An ultralight weight `CustomElement` for the modern web, that provides Component semantics with the highest possible performance, highest possible flexibility, lowest possible cognitive and abstractive overhead, depending only on the web-component standard with <1KB size (more like 800 bytes gzipped, really).
-
-In other words, it saves you a lot of time and headache, being super simple to learn and use, while staying future-proof.
+A renderer-agnostic ultralight weight `CustomElement` for the modern web, that provides Component semantics with the highest possible performance, highest possible flexibility, lowest possible cognitive and abstractive overhead, depending only on the web-component standard with <1KB size (more like 800 bytes gzipped, really).
 
 ## Installation
 
@@ -23,6 +21,10 @@ To use directly, in the browser.
 
 It's exported under the name `litecomponent`.
 
+
+---
+
+
 ## Features
 
 - It's super simple, and tiny. Read the source.
@@ -35,7 +37,11 @@ It's exported under the name `litecomponent`.
 - Explicit control of rendering. You say, when and where to render. But has very sensible automatic rendering logic that's extremely simply to understand, like when an load, update, attribute changes, etc. But everything can be overriden.
 - Operates natively on the DOM. No VDOM overhead (But there's nothing stopping you from having one, should you so wish).
 
-### Examples
+
+---
+
+
+## Examples
 
 #### Basic
 
@@ -239,7 +245,11 @@ register(App);
 
 ```
 
-### API
+
+---
+
+
+## API
 
 The entire API is so tiny and simple. You're probably better of reading the source,
 so you know exactly what it does internally as well.
@@ -378,7 +388,10 @@ This is all it does. So, you can swap things out as you like keeping the micro-f
 That's it! You've almost read the entire source now. Cheers!
 
 
-### Misc
+---
+
+
+## Misc
 
 - **Help. I don't see anything on the screen.** 
 
