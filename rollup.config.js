@@ -6,7 +6,7 @@ export default {
   output: {
     file: './dist/index.bundle.js',
     format: 'umd',
-    name: "litecomponent",
+    name: "icomponent",
   },
   plugins: [
     terser({

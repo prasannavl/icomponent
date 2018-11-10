@@ -1,4 +1,4 @@
-# litecomponent
+# icomponent
 
 A renderer-agnostic ultralight weight `CustomElement` for the modern web, that provides Component semantics with the highest possible performance, highest possible flexibility, lowest possible cognitive and abstractive overhead, depending only on the web-component standard with <1KB size (more like 800 bytes gzipped, really).
 
@@ -6,29 +6,29 @@ A renderer-agnostic ultralight weight `CustomElement` for the modern web, that p
 
 #### NPM
 ```
-npm install litecomponent
+npm install icomponent
 ```
 
-It provides both es6 modules, that can be accessed as `litecomponent/lib`, or cjs by default. Has `pkg.module` defined for es6 bundlers, like webpack. So feel free to just use `litecomponent`.
+It provides both es6 modules, that can be accessed as `icomponent/lib`, or cjs by default. Has `pkg.module` defined for es6 bundlers, like webpack. So feel free to just use `icomponent`.
 
 #### Unpkg
 
 To use directly, in the browser.
 
 ```js
-<script src="https://unpkg.com/litecomponent@latest/dist/index.bundle.js"></script>
+<script src="https://unpkg.com/icomponent@latest/dist/index.bundle.js"></script>
 ```
 
-It's exported under the name `litecomponent`.
+It's exported under the name `icomponent`.
 
 <!-- ##### -->
 
 ## Goals
 
 - Provide a full fledged minimal component abstraction with full render control, as stated in the project description.
-- JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Eventhough, `litecomponent` has a core goal to stand on it's own, it's flexibility and minimal abstraction makes it ideal to be able to mix and match renderers, and use `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc side-by-side, package each of them as individual isolated and standards compliant web components in the same project, without worrying about one affecting the other.
+- JavaScript ecosystem today is huge with new and innovative ways of rendering popping in and out everyday. Eventhough, `icomponent` has a core goal to stand on it's own, it's flexibility and minimal abstraction makes it ideal to be able to mix and match renderers, and use `hyperhtml`, `lit-html`, `React`, `Vue`, `Mithril`, `Inferno`, `CycleJs` etc side-by-side, package each of them as individual isolated and standards compliant web components in the same project, without worrying about one affecting the other.
 - Do all of the above at no extra cost of performance, or cognitive overhead.
-- While you can do this right away by providing your own `render` logic, I'd like to consider maintaining components like `LitHtmlComponent`, `HyperHtmlComponent`, `ReactLiteComponent` as supported components in the future,  under the same project for a more seamless experience.
+- While you can do this right away by providing your own `render` logic, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as supported components in the future,  under the same project for a more seamless experience.
 
 <!-- ##### -->
 
@@ -51,7 +51,7 @@ It's exported under the name `litecomponent`.
 #### Basic
 
 ```js
-import { LiteComponent, RenderManager } from "litecomponent";
+import { IComponent, IConfig } from "icomponent";
 import { html, render } from "lit-html";
 
 // Set the render function. By default it's a noop.
@@ -62,9 +62,9 @@ import { html, render } from "lit-html";
 // return item of be rendered (return value of `view`), and the dom node itself.
 // lit-html render function is exactly the same.
 // Modify other appropriately, depending what you decide to return from the view.
-RenderManager.render = render;
+IConfig.render = render;
 
-class App extends LiteComponent {
+class App extends IComponent {
   view() {
         return html`
         <div>Hello world!</div>
@@ -81,10 +81,10 @@ customElements.define("x-app", App);
 #### Same as above using localized render.
 
 ```js
-import { LiteComponent } from "litecomponent";
+import { IComponent } from "icomponent";
 import { html, render } from "lit-html";
 
-class LitHtmlComponent extends LiteComponent {
+class LitHtmlComponent extends IComponent {
    // Override this function to change any rendering logic.
    // This can use hyperhtml, React, Vue, or any custom logic
    // as desired.
@@ -125,7 +125,7 @@ let nameIt = (attrs) => {
 }
 
 // registerTag is just for convenience. You can also simply use:
-// customElements.define("x-app", LiteFn(App));
+// customElements.define("x-app", IFnComponent(App));
 registerTag("x-app", nameIt);
 
 // HTML
@@ -136,7 +136,7 @@ registerTag("x-app", nameIt);
 
 ```js
 
-class App extends LiteComponent {
+class App extends IComponent {
   constructor() {
       super();
       this.time = new Date();
@@ -180,7 +180,7 @@ class App extends LiteComponent {
 
 ```js
 
-class App extends LiteComponent {
+class App extends IComponent {
   constructor() {
       super();
       // If you wish to be stateless, you can pass it
@@ -257,7 +257,7 @@ register(App);
 The entire API is so tiny and simple. You're probably better of reading the source,
 so you know exactly what it does internally as well.
 
-Here's the `LiteElement`: 
+Here's the `IElement`: 
 
 ```js
 
@@ -299,16 +299,16 @@ Here's the `LiteElement`:
         this._postRender();
     }
 
-    // Queue a render using the RenderManager scheduler.
+    // Queue a render using the IConfig scheduler.
     queueRender() {
         if (this.renderQueueToken !== null) return;
-        this.renderQueueToken = RenderManager.schedule(this.renderNow);
+        this.renderQueueToken = IConfig.schedule(this.renderNow);
     }
 
-    // Clear any previously scheduled render using the RenderManager scheduler.
+    // Clear any previously scheduled render using the IConfig scheduler.
     clearRenderQueue() {
         if (this.renderQueueToken === null) return;
-        RenderManager.cancel(this.renderQueueToken);
+        IConfig.cancel(this.renderQueueToken);
         this.renderQueueToken = null;
     }
 
@@ -320,11 +320,11 @@ Here's the `LiteElement`:
     attributeChangedCallback(name, oldValue, newValue) { 
         this.attributeChanged(name, oldValue, newValue) }
 
-    // Default impl of render, delegated to the RenderManager.
+    // Default impl of render, delegated to the IConfig.
     // This internal method can be overriden to provide custom render impls locally,
-    // while retaining the RenderManager semantics globally.
+    // while retaining the IConfig semantics globally.
     _render() { 
-        RenderManager.render(this.view(), this.getRenderRoot());
+        IConfig.render(this.view(), this.getRenderRoot());
     }
 
     _postRender() {
@@ -332,13 +332,13 @@ Here's the `LiteElement`:
     }
 ```
 
-And now, the `LiteComponent`: 
+And now, the `IComponent`: 
 
 ```js
 // A component with a minimal opinion on how to handle state, providing
 // two tiny additions: the update, and dispatch method, with no other
 // changes or overhead.
-export class LiteComponent extends LiteElement {
+export class IComponent extends IElement {
     constructor() {
         super();
         // This is bound early for convenience,
@@ -367,10 +367,10 @@ export class LiteComponent extends LiteElement {
 }
 ```
 
-And finally `RenderManager` is just a simple object with that holds some useful defaults.
+And finally `IConfig` is just a simple object with that holds some useful defaults.
 
 ```js
-export const RenderManager = function () {
+export const IConfig = function () {
     //  The default renderer, it's noop. Let the application provide
     // a renderer.
     let render = function (view, root) { };
@@ -396,10 +396,10 @@ That's it! You've almost read the entire source now. Cheers!
 
 - **Help. I don't see anything on the screen.** 
 
-The default render function is a `noop`. You need to set `RenderManager.render`.
+The default render function is a `noop`. You need to set `IConfig.render`.
 One could argue that it could have a sensible default like setting innerHTML, or mutate the DOM with `appendChild`, etc. But this way, it's explicit and will simply not render. You just need to do it once.
 
-Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above. In the future, I'd like to consider maintaining components like `LitHtmlComponent`, `HyperHtmlComponent`, `ReactLiteComponent` as separate supported packages.
+Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above. In the future, I'd like to consider maintaining components like `LitIComponent`, `HyperIComponent`, `ReactIComponent` as separate supported components.
 
 
 - **`attributesChanged` not fired**

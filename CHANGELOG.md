@@ -1,4 +1,16 @@
-v2.0:
+v1.0.0:
+
+**Breaking**
+
+- The project is now called `icomponent`.
+
+  - `LiteElement` -> `IElement`
+  - `LiteComponent` -> `IComponent`
+  - `LiteFn` -> `IFnComponent`
+
+Everything else remains the same.
+
+v0.1.0:
 
 **Breaking**
 
@@ -15,7 +27,7 @@ v2.0:
   tree.
 
 
-v1.0.4:
+v0.0.4:
 
 **Added**
 
