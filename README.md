@@ -28,12 +28,12 @@ It's exported under the name `litecomponent`.
 - It's super simple, and tiny. Read the source.
 - Zero dependencies.
 - It's renderer and view agnostic. Define your own render logic, if you need, but it has the boilerplate.
-- Define your views in `lit-html`, `hyperhtml`, `jsx`, `document.createElement`, or even simple html strings:  Your call. (I highly recommend `lit-html` or `hyperhtml`). You can even use React, or Vue's renderer if full VDOM is your thing and you'd like to package them up as isolated web-components quickly.. or better yet - you can use them all in the same application.
+- Define your views in `lit-html`, `hyperhtml`, `jsx`, `document.createElement`, `React.createElement` or even direct html strings:  Your call. (I highly recommend `lit-html` or `hyperhtml`). You can even use React, or Vue's renderer if full VDOM is your thing and you'd like to package them up as isolated web-components quickly. Better yet - you can use them all in the same application.
 - It only uses W3C standards, and simply sits on top of the Custom Elements API providing similar conventions.
 - Provides an extremely simple Elm like *suggestion* for dealing with state, but it's really upto to you.
 - It's provides `queueRender`, `renderNow`, and `clearRenderQueue` - all of them do what they precisely say. No misnomer or complications like in `React` where `render` actually means, return a view. (I'd actually call it a design bug in React. It has nothing to do with rendering. It just builds a view - I'd have called it `view`).
 - Explicit control of rendering. You say, when and where to render. But has very sensible automatic rendering logic that's extremely simply to understand, like when an load, update, attribute changes, etc. But everything can be overriden.
-- Operates natively on the DOM. There's no VDOM overhead unless you bring it with you (which you can of course!)
+- Operates natively on the DOM. There's no VDOM overhead unless you bring it with you (which you happily can, of course!)
 
 <!-- ##### -->
 
