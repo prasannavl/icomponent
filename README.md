@@ -262,6 +262,7 @@ Here's the `LiteElement`:
         this.clearRenderQueue();
         this._render();
         this.rendered();
+        this._postRender();
     }
 
     // Queue a render using the RenderManager scheduler.
@@ -289,6 +290,10 @@ Here's the `LiteElement`:
     // while retaining the RenderManager semantics globally.
     _render() { 
         RenderManager.render(this.view(), this.getRenderRoot());
+    }
+
+    _postRender() {
+        this.dispatchEvent(new Event("render"));
     }
 ```
 
