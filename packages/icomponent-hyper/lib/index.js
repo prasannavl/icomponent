@@ -7,14 +7,30 @@ export { bind, wire } from "hyperhtml";
 export const html = (...args) => args;
 
 export class IElement extends CoreIElement {
+    constructor() {
+        super();
+        this._hyperRoot = null;
+    }
+
     _render() {
-        bind(this.getRenderRoot())(...this.view());
+        if (this._hyperRoot !== null) {
+            this._hyperRoot = bind(this.getRenderRoot());
+        }
+        this._hyperRoot(...this.view());
     }
 }
 
 export class IComponent extends CoreIComponent {
+    constructor() {
+        super();
+        this._hyperRoot = null;
+    }
+
     _render() {
-        bind(this.getRenderRoot())(...this.view());
+        if (this._hyperRoot !== null) {
+            this._hyperRoot = bind(this.getRenderRoot());
+        }
+        this._hyperRoot(...this.view());
     }
 }
 
