@@ -2790,6 +2790,13 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
+hyperhtml@^2.16.4:
+  version "2.16.4"
+  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.16.4.tgz#60ab8e99a3d28dccdf6615bb39156b1941140762"
+  integrity sha512-1NGdTI9XQlO36eCfLslJEk3YI7YbbCSboKK1DNwN3xl+ffpT8kFLlF1kyruur15kNlkl5gsxqEzIvgPah7Q8Bw==
+  dependencies:
+    lightercollective "^0.1.0"
+
 iconv-lite@^0.4.24, iconv-lite@^0.4.4, iconv-lite@~0.4.13:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -3296,10 +3303,10 @@ libnpmaccess@^3.0.0:
     npm-package-arg "^6.1.0"
     npm-registry-fetch "^3.8.0"
 
-lit-html@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-0.13.0.tgz#d05e7fe8ade572432120339c451c614669788adf"
-  integrity sha512-p3R2ji/ucNVG5skguy8WufmSYIdMiTTb9ObUVYM2bOuvIXzDnUiePXGwP5BDbKssW1K6fw1Oj/M07FzdPLsTXw==
+lightercollective@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/lightercollective/-/lightercollective-0.1.0.tgz#70df102c530dcb8d0ccabfe6175a8d00d5f61300"
+  integrity sha512-J9tg5uraYoQKaWbmrzDDexbG6hHnMcWS1qLYgJSWE+mpA3U5OCSeMUhb+K55otgZJ34oFdR0ECvdIb3xuO5JOQ==
 
 load-json-file@^1.0.0:
   version "1.1.0"

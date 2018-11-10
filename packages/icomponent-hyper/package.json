@@ -1,0 +1,28 @@
+{
+  "name": "icomponent-hyper",
+  "version": "1.2.2",
+  "author": "Prasanna Loganathar <pvl@prasannavl.com>",
+  "homepage": "https://github.com/prasannavl/icomponent",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "lib/index.js",
+  "unpkg": "dist/index.dist.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prasannavl/icomponent.git"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "babel ./lib -d dist",
+    "rollup": "rollup -c ./rollup.config.js",
+    "dist": "yarn run clean && yarn run build && yarn rollup",
+    "prepublishOnly": "yarn run dist"
+  },
+  "bugs": {
+    "url": "https://github.com/prasannavl/icomponent/issues"
+  },
+  "peerDependencies": {
+    "icomponent": "^1.2.2",
+    "hyperhtml": "^2.16.4"
+  }
+}
