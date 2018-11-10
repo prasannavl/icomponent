@@ -21,9 +21,7 @@ To use directly, in the browser.
 
 It's exported under the name `litecomponent`.
 
-
----
-
+<!-- ##### -->
 
 ## Features
 
@@ -37,9 +35,7 @@ It's exported under the name `litecomponent`.
 - Explicit control of rendering. You say, when and where to render. But has very sensible automatic rendering logic that's extremely simply to understand, like when an load, update, attribute changes, etc. But everything can be overriden.
 - Operates natively on the DOM. No VDOM overhead (But there's nothing stopping you from having one, should you so wish).
 
-
----
-
+<!-- ##### -->
 
 ## Examples
 
@@ -245,9 +241,7 @@ register(App);
 
 ```
 
-
----
-
+<!-- ### -->
 
 ## API
 
@@ -387,9 +381,7 @@ export const RenderManager = function () {
 This is all it does. So, you can swap things out as you like keeping the micro-framework agnostic.
 That's it! You've almost read the entire source now. Cheers!
 
-
----
-
+<!-- ### -->
 
 ## Misc
 
