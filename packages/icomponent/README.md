@@ -119,6 +119,21 @@ customElements.define("x-app", App);
 // <html><x-app></x-app></html>
 ```
 
+#### Converting an existing react component into a web-compoenent 
+
+```js
+import { defineTag } from "icomponent-react";
+import React from "react";
+import MySuperCoolReactComponent from "./my-component";
+
+defineTag("my-component", () => MySuperCoolReactComponent);
+
+// HTML
+// <html><my-component></my-component></html>
+```
+
+Yup. That's it. One line, and you get a full `icomponent` goodness, with the react component. You can also explicitly do this as a class with your view simply returning the react component.
+
 
 #### Basic without any adaptors
 
