@@ -21,8 +21,8 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "peerDependencies": {
-    "icomponent": "^1.2.9",
-    "lit-html": "^0.13.0"
+    "lit-html": "^0.13.0",
+    "icomponent": "^1.4.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
