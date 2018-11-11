@@ -14,7 +14,7 @@ npm install icomponent
 
 It provides both es6 modules, that can be accessed as `icomponent/lib`, or cjs by default. Has `pkg.module` defined for es6 bundlers, like webpack. So feel free to just use `icomponent`.
 
-## Currently supported adaptors
+#### Currently supported adaptors
 
 - `icomponent-lit` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-lit)]: [lit-html](https://github.com/Polymer/lit-html) implementation
 - `icomponent-hyper` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-hyper)]: [hyperhtml](https://github.com/WebReflection/hyperHTML)
