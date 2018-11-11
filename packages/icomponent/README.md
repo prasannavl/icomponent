@@ -16,6 +16,7 @@ It provides both es6 modules, that can be accessed as `icomponent/lib`, or cjs b
 
 #### Currently supported adaptors
 
+- `icomponent-react` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-react)]: [react](https://github.com/facebook/react)
 - `icomponent-lit` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-lit)]: [lit-html](https://github.com/Polymer/lit-html) implementation
 - `icomponent-hyper` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-hyper)]: [hyperhtml](https://github.com/WebReflection/hyperHTML)
 
@@ -25,7 +26,7 @@ All of the above packages provide an exact interface as `icomponent`. That is, `
 
 They also usually re-export some handy ones from the upstream packages for convenience. The component specific README should have more information. 
 
-Other adaptors like `React`, `Inferno`, `CycleJs` etc, should be very easy to write, but I haven't got around to doing it yet.
+Other adaptors like `Inferno`, `CycleJs` etc, should be very easy to write, but I haven't got around to doing it yet.
 
 #### Unpkg
 
@@ -92,6 +93,32 @@ customElements.define("x-app", App);
 ```
 
 **Note:** `icomponent-hyper` also exports hyper's `bind` and `wire`. `html` is a convenience export to retain similar semantics between hyper and lit-html.
+
+#### Basic using react
+
+```js
+import { IComponent } from "icomponent-react";
+import React from "react";
+
+class App extends IComponent {
+    
+  // Yup, full goodness of react with jsx!
+  // While this component is now managed by react, you can 
+  // use any icomponent methods as well like `update`, `renderNow`, 
+  // `queueRender`, `dispatch`, etc and the whole shebang.
+  view() {
+      <SomeReactComponent>
+        <div>Hello world!</div>
+      </SomeReactComponent>
+    }
+}
+
+customElements.define("x-app", App);
+
+// HTML
+// <html><x-app></x-app></html>
+```
+
 
 #### Basic without any adaptors
 
