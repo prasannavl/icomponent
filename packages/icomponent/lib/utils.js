@@ -23,7 +23,7 @@ export function defineComponentsCore(fnComponentFactory, ...components) {
 }
 
 export function defineTag(name, component) {
-    defineTagCore(defineComponent, name, component);
+    defineTagCore(defineComponents, name, component);
 }
 
 export function defineComponents(...components) {
