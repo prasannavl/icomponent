@@ -4,7 +4,7 @@ A *zero overhead*, **render-agnostic** `CustomElement` for the modern web, that 
 
 Let's you use the DOM as framework or bring your framework, use the DOM as renderer or bring your renderer, and let them all talk to each other nicely.
 
-Compared to other similar wrappers and/or so called lightweight components, `icomponents` merely provide a consistent interface, has zero  allocations of it's own (actually there are exactly 2, but both will be optimized away by V8), and all it does is merely a few function calls, that again are likley to get optimized. 
+Compared to other similar wrappers and/or so called lightweight components, `icomponents` merely provide a consistent interface, has *almost* zero allocations of it's own (there are some indirect unavoidable ones, but V8 will optimize them), and all it does is a few function calls that puts it right back into your code, or the given renderer, most of them will again will be optimized away by V8 if  needed. 
 
 ## Installation
 
