@@ -26,4 +26,4 @@ export class IComponent extends CoreIComponent {
     }
 }
 
-export function IFnComponent(fn) { return iFnComponentCore(fn, IElement); }
+export function IFnComponent(fn) { return iFnComponentCore(fn, IComponent); }

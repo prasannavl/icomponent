@@ -128,7 +128,7 @@ export function iFnComponentCore(fn, BaseClass) {
     }
 }
 
-export function IFnComponent(fn) { return iFnComponentCore(fn, IElement); }
+export function IFnComponent(fn) { return iFnComponentCore(fn, IComponent); }
 
 export const IDefault = function () {
     //  The default renderer, it's noop. Let the application provide
