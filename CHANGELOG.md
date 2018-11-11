@@ -1,3 +1,7 @@
+# v1.3.x:
+
+Supported adaptors for `react`, `hyperhtml` and `lit-html`.
+
 # v1.2.0:
 
 **Breaking**
