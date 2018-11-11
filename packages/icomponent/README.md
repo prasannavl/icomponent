@@ -1,6 +1,6 @@
 # icomponent
 
-A *zero overhead*, **render-agnostic** `CustomElement` for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead being 100% web standards compliant at **<1KB** size (more like 800 bytes gzipped, really).
+A *zero overhead*, **render-agnostic** `CustomElement` for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant weighing in at **<1KB** (more like 800 bytes gzipped, really).
 
 Let's you use the DOM as framework or bring your framework, use the DOM as renderer or bring your renderer, and let them all talk to each other nicely.
 
