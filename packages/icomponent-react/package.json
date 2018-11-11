@@ -1,6 +1,6 @@
 {
   "name": "icomponent-react",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": "Prasanna Loganathar <pvl@prasannavl.com>",
   "homepage": "https://github.com/prasannavl/icomponent",
   "license": "MIT",
@@ -21,9 +21,9 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "peerDependencies": {
+    "icomponent": "^1.4.1",
     "react": "^16.6.1",
-    "react-dom": "^16.6.1",
-    "icomponent": "^1.4.1"
+    "react-dom": "^16.6.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
