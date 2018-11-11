@@ -76,6 +76,20 @@ For implementation specific packages, you need to have the correct packages in s
 - [Timer](https://github.com/prasannavl/icomponent#timer)
 - [Simple state management](https://github.com/prasannavl/icomponent#simple-state-management)
 
+<!-- ##### -->
+
+### Tips
+
+icomponent provides the web component model. So, you can easily do things like these by just writing your own render functions:
+
+- Raw `jsx` without `react` on native dom? Use [nativejsx](https://github.com/treycordova/nativejsx) for views, and use `document.appendChild/replaceChild` on render. 
+- `jsx` with more convenient syntax: Try [jsx-dom](https://github.com/glixlur/jsx-dom)
+- `jsx` using `innerHTML`: Try [vhtml](https://github.com/developit/vhtml)
+- `hyperscript` and it's vdom with icomponent model? Just return your `h` from views, and use `document.appendChild/replaceChild` similar on render, very similar to jsx.
+- This is exactly what the supported adaptors do. Have a look at a few of them to see how. They are super simple.
+
+<!-- ##### -->
+
 #### Basic
 
 Using `icomponent-lit` or `icomponent-hyper`
