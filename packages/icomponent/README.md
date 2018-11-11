@@ -67,6 +67,15 @@ For implementation specific packages, you need to have the correct packages in s
 
 ## Examples
 
+- [Basic](https://github.com/prasannavl/icomponent#basic)
+- [Basic using react](https://github.com/prasannavl/icomponent#basic-using-react)
+- [Converting an existing react component into a web-component](https://github.com/prasannavl/icomponent#converting-an-existing-react-component-into-a-web-component)
+- [Basic without any adaptors](https://github.com/prasannavl/icomponent#basic-without-any-adaptors)
+- [Basic using localized render](https://github.com/prasannavl/icomponent#basic-using-localized-render)
+- [Functional](https://github.com/prasannavl/icomponent#functional)
+- [Timer](https://github.com/prasannavl/icomponent#timer)
+- [Simple state management](https://github.com/prasannavl/icomponent#simple-state-management)
+
 #### Basic
 
 Using `icomponent-lit` or `icomponent-hyper`
@@ -119,7 +128,7 @@ customElements.define("x-app", App);
 // <html><x-app></x-app></html>
 ```
 
-#### Converting an existing react component into a web-compoenent 
+#### Converting an existing react component into a web-component 
 
 ```js
 import { defineTag } from "icomponent-react";
