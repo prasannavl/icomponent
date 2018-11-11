@@ -1,17 +1,17 @@
 import { IFnComponent } from "./base";
 
-export function defineTag(name, component) {
+export function defineTagCore(defineFactory, name, component) {
     if (component == null) nullComponentError();
     component.tag = name;
-    defineComponents(component);
+    defineFactory(component);
 }
 
-export function defineComponents(...components) {
+export function defineComponentsCore(fnComponentFactory, ...components) {
     for (let c of components) {
         if (c == null) nullComponentError();
         if (!isPrototypeOf(c, HTMLElement)) {
             let o = c;
-            c = IFnComponent(c);
+            c = fnComponentFactory(c);
             c.tag = o.tag;
         }
         let name = c.tag;
@@ -21,6 +21,15 @@ export function defineComponents(...components) {
         customElements.define(name, c);
     }
 }
+
+export function defineTag(name, component) {
+    defineTagCore(defineComponent, name, component);
+}
+
+export function defineComponents(...components) {
+    defineComponentsCore(IFnComponent, ...components);
+}
+
 
 function nullComponentError() {
     throw new TypeError("null component");

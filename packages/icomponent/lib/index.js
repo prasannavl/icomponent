@@ -1,2 +1,2 @@
-export { IElement, IComponent, IFnComponent, IDefault, iFnComponentCore } from "./base";
-export * from "./utils";
+export { IElement, IComponent, IFnComponent, IDefault } from "./base";
+export { defineTag, defineComponents } from "./utils";

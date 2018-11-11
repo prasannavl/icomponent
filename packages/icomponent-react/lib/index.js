@@ -1,7 +1,8 @@
+import { IElement as CoreIElement, IComponent as CoreIComponent } from "icomponent/lib";
+import { iFnComponentCore } from "icomponent/lib/base";
 import { render, unmountComponentAtNode } from "react-dom";
-import { IElement as CoreIElement, IComponent as CoreIComponent, iFnComponentCore } from "icomponent";
 
-export * from "./utils";
+export { defineComponents, defineTag } from "./utils";
 export { createElement } from "react";
 export { render } from "react-dom";
 

@@ -1,7 +1,8 @@
-import { IElement as CoreIElement, IComponent as CoreIComponent, iFnComponentCore } from "icomponent";
+import { IElement as CoreIElement, IComponent as CoreIComponent } from "icomponent/lib";
+import { iFnComponentCore } from "icomponent/lib/base";
 import { bind } from "hyperhtml";
 
-export * from "./utils";
+export { defineComponents, defineTag } from "./utils";
 export { bind, wire } from "hyperhtml";
 
 export const html = (...args) => args;
