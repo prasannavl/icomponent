@@ -9,7 +9,6 @@ This is a minor, but breaking release, due to an immediate, small rename.
 
 To stay closer to standard `customElements.define` naming conventions.
 
-
 # v1.1.0:
 
 **Breaking**
