@@ -1,3 +1,13 @@
+# v1.4.0:
+
+**Fixed**
+
+- A bug that caused functional components to always implement the default IElement. It now works correctly.
+
+**Changed**
+
+- Functional components now implement IComponent instead of just IElement
+
 # v1.3.x:
 
 Supported adaptors for `react`, `hyperhtml` and `lit-html`.
