@@ -1,16 +1,15 @@
+# v1.4.1:
+
+- [fix] Incorrect function call for functional components
+
 # v1.4.0:
 
-**Fixed**
-
-- A bug that caused functional components to always implement the default IElement. It now works correctly.
-
-**Changed**
-
-- Functional components now implement IComponent instead of just IElement
+- [fix] A bug that caused functional components to always implement the default IElement. It now works correctly.
+- [change] Functional components now implement IComponent instead of just IElement
 
 # v1.3.x:
 
-Supported adaptors for `react`, `hyperhtml` and `lit-html`.
+- [add] Supported adaptors for `react`, `hyperhtml` and `lit-html`.
 
 # v1.2.0:
 
@@ -62,9 +61,7 @@ Everything else remains the same.
 
 # v0.0.4:
 
-**Added**
-
-- A `render` event is now emitted on after every render. This is useful for external
+- [change] A `render` event is now emitted on after every render. This is useful for external
   components to know when a render has occurred. This can also be used to execute
   code once on immediate next render, without having to hook into `rendered` method.
   
