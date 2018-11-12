@@ -49,7 +49,7 @@ export class IElement extends HTMLElement {
     // Queue a render using the RenderManager scheduler.
     queueRender() {
         if (this.renderQueueToken !== null) return;
-        this.renderQueueToken = IDefault.schedule(this.renderNow);
+        this.renderQueueToken = IDefault.schedule(this.render);
     }
 
     // Clear any previously scheduled render using the RenderManager scheduler.
@@ -115,7 +115,7 @@ export function iFnComponentCore(fn, BaseClass) {
         connected() {
             // Render immediately instead of queuing so the first
             // view is immediately materialized.
-            this.renderNow();
+            this.render();
         }
         view() {
             return fn(this.attributes);
