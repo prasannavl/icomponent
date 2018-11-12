@@ -4,7 +4,7 @@ A *zero overhead*, **render-agnostic** `CustomElement` for the modern web, that 
 
 Let's you use the DOM as framework or bring your framework, use the DOM as renderer or bring your renderer, and let them all talk to each other nicely.
 
-Compared to other similar wrappers and/or so called lightweight components, `icomponents` merely provide a consistent interface, has *almost* zero allocations of it's own (there are some indirect unavoidable ones, but V8 will optimize them), and all it does is a few function calls that puts it right back into your code, or the given renderer, most of them will again will be optimized away by V8 if  needed. 
+Compared to other similar wrappers and/or so called lightweight components, `icomponents` merely provide a consistent interface, has *almost* zero allocations of it's own (there are some indirect unavoidable ones, which V8 should take care of optimizing), and all it does is a few function calls that puts it right back into your code.
 
 ## Installation
 
@@ -14,7 +14,7 @@ Compared to other similar wrappers and/or so called lightweight components, `ico
 npm install icomponent
 ```
 
-It provides both es6 modules, that can be accessed as `icomponent/lib`, or cjs by default. Has `pkg.module` defined for es6 bundlers, like webpack. So feel free to just use `icomponent`.
+As of v2.0.0, only es6 modules are provided. (See [changelog](https://github.com/prasannavl/icomponent/blob/master/CHANGELOG.md#v200))
 
 #### Currently supported adaptors
 
@@ -410,11 +410,10 @@ Here's the `IElement`:
     getRenderRoot() { return this; }
 
     // Render immediately.
-    renderNow() {
+    render() {
         this.clearRenderQueue();
         this._render();
         this.rendered();
-        this._postRender();
     }
 
     // Queue a render using the IDefault scheduler.
@@ -445,9 +444,6 @@ Here's the `IElement`:
         IDefault.render(this.view(), this.getRenderRoot());
     }
 
-    _postRender() {
-        this.dispatchEvent(new Event("render"));
-    }
 ```
 
 And now, the `IComponent`: 
@@ -512,7 +508,7 @@ That's it! You've almost read the entire source now. Cheers!
 
 ## FAQ
 
-- **Help. I don't see anything on the screen.** 
+- **I don't see anything on the screen.** 
 
 The default render function is a `noop`.  
 
@@ -539,3 +535,6 @@ The default action of connected is to `queueRender`, so that a render is perform
 
 This provides the advantage of being lazy, and having the flexibility to act both ways.
 
+- **Uncaught TypeError: Class constructor IComponent cannot be invoked without 'new'**
+
+This can happen with bundlers like `parcel`. This basically means parcel is configured incorrectly and an ES5 class is extending an ES6 class. Try adding `"browserslist: 'last 2 Chrome versions'` (which supports ES6 classes natively) to your `package.json` and check. If that works, that confirms the issue.

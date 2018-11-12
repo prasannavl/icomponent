@@ -1,17 +1,9 @@
 {
   "name": "icomponent",
   "version": "1.4.1",
-  "main": "dist/index.js",
-  "module": "lib/index.js",
-  "unpkg": "lib/index.js",
+  "main": "lib/index.js",
   "author": "Prasanna V. Loganathar <pvl@prasannavl.com> (https://www.prasannavl.com)",
   "license": "MIT",
-  "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "babel ./lib -d dist",
-    "dist": "yarn run clean && yarn run build",
-    "prepublishOnly": "yarn run dist"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/prasannavl/icomponent.git"
@@ -28,11 +20,5 @@
   "bugs": {
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
-  "homepage": "https://github.com/prasannavl/icomponent",
-  "devDependencies": {
-    "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.1.5",
-    "@babel/preset-env": "^7.1.5",
-    "rimraf": "^2.6.2"
-  }
+  "homepage": "https://github.com/prasannavl/icomponent"
 }

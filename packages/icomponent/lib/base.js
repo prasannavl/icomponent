@@ -6,7 +6,7 @@ export class IElement extends HTMLElement {
         this.renderQueueToken = null;
         // Provide an early binding since this can get passed
         // into RenderManager scheduler repeatedly.
-        this.renderNow = this.renderNow.bind(this);
+        this.render = this.render.bind(this);
     }
 
     // Simply returns the next view representation.
@@ -40,11 +40,10 @@ export class IElement extends HTMLElement {
     getRenderRoot() { return this; }
 
     // Render immediately.
-    renderNow() {
+    render() {
         this.clearRenderQueue();
         this._render();
         this.rendered();
-        this._postRender();
     }
 
     // Queue a render using the RenderManager scheduler.
@@ -72,10 +71,6 @@ export class IElement extends HTMLElement {
     // while retaining the RenderManager semantics globally.
     _render() { 
         IDefault.render(this.view(), this.getRenderRoot());
-    }
-
-    _postRender() {
-        this.dispatchEvent(new Event("render"));
     }
 }
 
