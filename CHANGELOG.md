@@ -1,3 +1,7 @@
+# v3.1.0
+
+- [**BREAKING**] `IComponentFn` now passes in the component itself rather than just `this.attributes`. This is simpler, provides more control, and is more performant.
+
 # v3.0.0
 
 - [**BREAKING**] Almost complete rewrite. The following changes have been done.
