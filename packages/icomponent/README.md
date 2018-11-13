@@ -1,6 +1,6 @@
 # icomponent
 
-A *zero overhead*, **render-agnostic** micro-framework for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant weighing in at **<1KB** (more like 800 bytes gzipped, really).
+A super simple, **render-agnostic**, *ultra light-weight* micro-framework for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant weighing in at **<1KB** (more like 800 bytes gzipped, really).
 
 Let's you use the DOM as framework or bring your framework, use the DOM as renderer or bring your renderer, and let them all talk to each other nicely.
 
