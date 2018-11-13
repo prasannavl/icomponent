@@ -1,29 +1,23 @@
-import { IElement as CoreIElement, IComponent as CoreIComponent } from "icomponent/lib";
-import { iFnComponentCore } from "icomponent/lib/base";
+import { IComponent as IComponentBase, Renderer  } from "icomponent/lib";
+import { componentFn } from "icomponent/lib/component";
 import { render, unmountComponentAtNode } from "react-dom";
 
-export { defineComponents, defineTag } from "./utils";
+export { IComponentCore } from "icomponent/lib";
 export { createElement } from "react";
 export { render } from "react-dom";
 
-export class IElement extends CoreIElement {
+export function reactRender() {
+    render(this.view(), this.getRenderRoot());
+}
+
+export class IComponent extends IComponentBase {
+    createRenderer() {
+        return new Renderer(this, reactRender.bind(this));
+    }
     disconnected() {
         unmountComponentAtNode(this.getRenderRoot());
         super.disconnected();
     }
-    _render() {
-        render(this.view(), this.getRenderRoot());
-    }
 }
 
-export class IComponent extends CoreIComponent {
-    disconnected() {
-        unmountComponentAtNode(this.getRenderRoot());
-        super.disconnected();
-    }
-    _render() {
-        render(this.view(), this.getRenderRoot());
-    }
-}
-
-export function IFnComponent(fn) { return iFnComponentCore(fn, IComponent); }
+export function IComponentFn(fn) { return componentFn(fn, IComponent); }

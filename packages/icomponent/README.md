@@ -1,10 +1,10 @@
 # icomponent
 
-A *zero overhead*, **render-agnostic** `CustomElement` for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant weighing in at **<1KB** (more like 800 bytes gzipped, really).
+A *zero overhead*, **render-agnostic** micro-framework for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant weighing in at **<1KB** (more like 800 bytes gzipped, really).
 
 Let's you use the DOM as framework or bring your framework, use the DOM as renderer or bring your renderer, and let them all talk to each other nicely.
 
-Compared to other similar wrappers and/or so called lightweight components, `icomponents` merely provide a consistent interface, has *almost* zero allocations of it's own (there are some indirect unavoidable ones, which V8 should take care of optimizing), and all it does is a few function calls that puts it right back into your code.
+Compared to other similar wrappers and/or so called lightweight components, `icomponents` merely provide a consistent interface, has nothing more than a single allocation of it's own (which is the lightweight `Renderer` object), and all it does is a few function calls that V8 should optimize out in most cases, and puts you right back into your code.
 
 ## Installation
 
@@ -24,7 +24,7 @@ As of v2.0.0, only es6 modules are provided. (See [changelog](https://github.com
 
 Install the above npm packages directly, if you prefer not to use your own renderer. They generally include the upstream package as well as `icomponent` as `peer dependencies`.
 
-All of the above packages provide an exact interface as `icomponent`. That is, `icomponent` exports `IComponent` that has a no-op renderer by default that can configured with `IDefault`. `icomponent-lit` provides `IComponent` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
+All of the above packages provide an exact interface as `icomponent`. That is, `icomponent` exports `IComponent` that has a no-op renderer by default (which can be changed by setting `Renderer.render`) `icomponent-lit` provides `IComponent` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
 
 They also usually re-export some handy ones from the upstream packages for convenience. The component specific README should have more information. 
 
@@ -36,7 +36,7 @@ To use directly, in the browser.
 
 ```js
 <script type="module">
-  import { IComponent, defineTag } from 'https://unpkg.com/icomponent@latest/lib/index.js';
+  import { IComponent } from 'https://unpkg.com/icomponent@latest/lib/index.js';
 </script>
 ```
 
@@ -131,9 +131,9 @@ class App extends IComponent {
   // use any icomponent methods as well like `update`, `render`, 
   // `queueRender`, `dispatch`, etc and the whole shebang.
   view() {
-      <SomeReactComponent>
+      return <SomeReactComponent>
         <div>Hello world!</div>
-      </SomeReactComponent>
+      </SomeReactComponent>;
     }
 }
 
@@ -146,11 +146,11 @@ customElements.define("x-app", App);
 #### Converting an existing react component into a web-component 
 
 ```js
-import { defineTag } from "icomponent-react";
+import { IComponentFn } from "icomponent-react";
 import React from "react";
 import MySuperCoolReactComponent from "./my-component";
 
-defineTag("my-component", () => MySuperCoolReactComponent);
+customElements.define("my-component", IComponentFn(() => MySuperCoolReactComponent));
 
 // HTML
 // <html><my-component></my-component></html>
@@ -164,18 +164,16 @@ Yup. That's it. One line, and you get a full `icomponent` goodness, with the rea
 This is the same one, using `lit-html`, but without any adaptors, overriding the default renderer.
 
 ```js
-import { IComponent, IDefault } from "icomponent";
+import { IComponent, Renderer } from "icomponent";
 import { html, render } from "lit-html";
 
 // Set the render function. By default it's a noop.
 // Set it only once per application, or alternatively, 
-// override `_render` function and write your own render logic.
+// override `createRenderer` function and to provide your own render fn.
 
-// render is any function that takes two args, 
-// return item of be rendered (return value of `view`), and the dom node itself.
-// lit-html render function is exactly the same.
-// Modify other appropriately, depending what you decide to return from the view.
-IDefault.render = render;
+// render is any function that takes one argument - the original
+// component by default.
+Renderer.render = (c) => render(c.view(), c.getRenderRoot());
 
 class App extends IComponent {
   view() {
@@ -197,15 +195,17 @@ Same as the above, but without using any adaptor, or overriding the default rend
 This implementation is also similar to what the adaptors do internally.
 
 ```js
-import { IComponent } from "icomponent";
+import { IComponent, Renderer } from "icomponent";
 import { html, render } from "lit-html";
 
 class LitHtmlComponent extends IComponent {
    // Override this function to change any rendering logic.
    // This can use hyperhtml, React, Vue, or any custom logic
    // as desired.
-    _render() {
-        render(this.view(), this.getRenderRoot());
+    createRenderer() {
+        // The icomponent-lit does the exact same thing conceptually,
+        // just in a more optimized way.
+        return new Renderer(this, () => render(this.view(), this.getRenderRoot()));
     }
 }
 
@@ -230,7 +230,7 @@ class Nav extends LitHtmlComponent {
 
 #### Functional
 
-`IFnComponent` provides functional semantics. Functional components also automatically pass along the DOM attributes as arguments.
+`IComponentFn` provides functional semantics. Functional components also automatically pass along the DOM attributes as arguments.
 
 ```js
 
@@ -242,9 +242,7 @@ let nameIt = (attrs) => {
     `;
 }
 
-// defineTag is just for convenience. You can also simply use:
-// customElements.define("hello-component", IFnComponent(nameIt));
-defineTag("hello-component", nameIt);
+customElements.define("hello-component", IComponentFn(nameIt));
 
 // HTML
 // <html><hello-component name="Jane"></hello-component></html>
@@ -361,11 +359,6 @@ class App extends IComponent {
 // as per the DOM spec for custom elements.
 // App.observedAttributes = ["value"];
 
-// Oh yeah, you can do this as well.
-App.tag = "x-app";
-
-defineComponents(App);
-
 ```
 
 <!-- ### -->
@@ -375,16 +368,41 @@ defineComponents(App);
 The entire API is so tiny and simple. You're probably better of reading the source,
 so you know exactly what it does internally as well.
 
-Here's the `IElement`: 
+Here's the `IComponentCore`: 
 
 ```js
+// An ultra-light weight, super-simple component
+class IComponentCore {
+    constructor() {
+        IComponent.init(this);
+    }
+
+    /// Rendering
+
+    // Creates a new renderer for the element. Renderer is a per-instance
+    // lightweight object that schedules rendering. The actual rendering
+    // can also be overridden with it's constructor.
+    createRenderer() {
+        return new Renderer(this);
+    }
 
     // Simply returns the next view representation.
     // It's recommended to have this as a pure function.
     view() { }
-    
-    // After render method, executed immediately after rendering.
-    rendered() { }
+
+    // Provide the root for the rendering. By default, it provides back the 
+    // element itself (self). If a Shadow DOM is used/needed, then this
+    // method can be overridden to return the shadow root instead.
+    getRenderRoot() { return this; }
+
+    // Render immediately.
+    render() { this.renderer.render(); }
+    // Queue a render using the scheduler.
+    queueRender() { this.renderer.schedule(); }
+    // Clear any previously scheduled render.
+    clearRenderQueue() { this.renderer.cancel(); }
+
+    /// Lifecycle
 
     // When element is a part of the DOM tree.
     // called by connectedCallback. Default action is to queue a 
@@ -404,61 +422,14 @@ Here's the `IElement`:
     // render.
     attributeChanged(name, oldVal, newVal) { this.queueRender(); }
 
-    // Provide the root for the rendering. By default, it provides back the 
-    // element itself (self). If a Shadow DOM is used/needed, then this
-    // method can be overridden to return the shadow root instead.
-    getRenderRoot() { return this; }
-
-    // Render immediately.
-    render() {
-        this.clearRenderQueue();
-        this._render();
-        this.rendered();
-    }
-
-    // Queue a render using the IDefault scheduler.
-    queueRender() {
-        if (this.renderQueueToken !== null) return;
-        this.renderQueueToken = IDefault.schedule(this.render);
-    }
-
-    // Clear any previously scheduled render using the IDefault scheduler.
-    clearRenderQueue() {
-        if (this.renderQueueToken === null) return;
-        IDefault.cancel(this.renderQueueToken);
-        this.renderQueueToken = null;
-    }
-
     /// Lifecycle connections
 
     connectedCallback() { this.connected() }
     disconnectedCallback() { this.disconnected() }
     adoptedCallback() { this.adopted() }
-    attributeChangedCallback(name, oldValue, newValue) { 
-        this.attributeChanged(name, oldValue, newValue) }
+    attributeChangedCallback(name, oldValue, newValue) { this.attributeChanged(name, oldValue, newValue) }
 
-    // Default impl of render, delegated to the IDefault.
-    // This internal method can be overriden to provide custom render impls locally,
-    // while retaining the IDefault semantics globally.
-    _render() { 
-        IDefault.render(this.view(), this.getRenderRoot());
-    }
-
-```
-
-And now, the `IComponent`: 
-
-```js
-// A component with a minimal opinion on how to handle state, providing
-// two tiny additions: the update, and dispatch method, with no other
-// changes or overhead.
-export class IComponent extends IElement {
-    constructor() {
-        super();
-        // This is bound early for convenience,
-        // to be able to use in jsx/template html events.
-        this.dispatch = this.dispatch.bind(this);
-    }
+    /// State management
 
     // A method for handling state mutations and additional renders.
     // Takes a message and value. Returning false, prevent scheduling
@@ -481,25 +452,51 @@ export class IComponent extends IElement {
 }
 ```
 
-And finally `IDefault` is just a simple object with that holds some useful defaults.
+And now, the `IComponent`, which is just an `IComponentCore` that inherits `HTMLElement`.
 
 ```js
-export const IDefault = function () {
-    //  The default renderer, it's noop. Let the application provide
-    // a renderer.
-    let render = function (view, root) { };
-        // We already assume HTMLElement, so it's makes so sense testing for window and such.
-    let schedule = window.requestAnimationFrame ? window.requestAnimationFrame : setTimeout;
-    let cancel = window.cancelAnimationFrame ? window.cancelAnimationFrame : clearTimeout;
-    
-    schedule = schedule.bind(this);
-    cancel = cancel.bind(this);
-
-    return { render, schedule, cancel };
-}();
-
+class IComponent extends HTMLElement {
+    constructor() {
+        super();
+        IComponentCore.init(this);
+    }
+}
+IComponentCore.extend(IComponent);
 ```
 
+And finally `Renderer`:
+
+```js
+class Renderer {
+    constructor(component, fn) {
+        this.renderQueueToken = null;
+        this.component = component;
+        this.fn = fn || Renderer.render;
+        // Provide an early binding since this can get passed
+        // into the scheduler repeatedly.
+        this.render = this.render.bind(this);
+    }
+
+    // Render immediately.
+    render() {
+        this.cancel();
+        this.fn(this.component);
+    }
+
+    // Queue a render using the default scheduler.
+    schedule() {
+        if (this.renderQueueToken !== null) return;
+        this.renderQueueToken = Renderer.schedule(this.render);
+    }
+
+    // Clear any previously scheduled render.
+    cancel() {
+        if (this.renderQueueToken === null) return;
+        Renderer.cancel(this.renderQueueToken);
+        this.renderQueueToken = null;
+    }
+}
+```
 
 This is all it does. So, you can swap things out as you like keeping the micro-framework agnostic.
 That's it! You've almost read the entire source now. Cheers!
@@ -512,16 +509,14 @@ That's it! You've almost read the entire source now. Cheers!
 
 The default render function is a `noop`.  
 
-You have 3 options: 
+You have 4 options: 
 
 - Use one of the adaptor packages directly
-- Set `IDefault.render` 
-- Implement `_render`
+- Set `Renderer.render`
+- Set a renderer function to `Renderer` inside `createRenderer` as `new Renderer(this, myRenderFn)` 
+- Implement a fully custom `Renderer` (which isn't needed in most cases as the default renderer handles scheduling, coalescing, on `requestAnimationFrame` nicely. 
 
 One could argue that it could have a sensible default like setting innerHTML, or mutate the DOM with `appendChild`, etc. But this way, it's explicit and will simply not render. You just need to do it once.
-
-Alternatively, you can also override `_render`, write your own render logic and make subclasses out of it. This is already shown for `lit-html` in the examples above.
-
 
 - **`attributesChanged` not fired**
 

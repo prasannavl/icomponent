@@ -1,20 +1,18 @@
-import { IElement as CoreIElement, IComponent as CoreIComponent } from "icomponent/lib";
-import { iFnComponentCore } from "icomponent/lib/base";
+import { IComponent as IComponentBase, Renderer  } from "icomponent/lib";
+import { componentFn } from "icomponent/lib/component";
 import { render } from "lit-html";
 
-export { defineComponents, defineTag } from "./utils";
+export { IComponentCore } from "icomponent/lib";
 export { html } from "lit-html";
 
-export class IElement extends CoreIElement {
-    _render() {
-        render(this.view(), this.getRenderRoot());
+export function litRender() {
+    render(this.view(), this.getRenderRoot());
+}
+
+export class IComponent extends IComponentBase {
+    createRenderer() {
+        return new Renderer(this, litRender.bind(this));
     }
 }
 
-export class IComponent extends CoreIComponent {
-    _render() {
-        render(this.view(), this.getRenderRoot());
-    }
-}
-
-export function IFnComponent(fn) { return iFnComponentCore(fn, IComponent); }
+export function IComponentFn(fn) { return componentFn(fn, IComponent); }

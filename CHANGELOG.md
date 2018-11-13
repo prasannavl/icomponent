@@ -1,3 +1,14 @@
+# v3.0.0
+
+- [**BREAKING**] Almost complete rewrite. The following changes have been done.
+    - There are no longer `IElement` and `IComponent`. It's now simplified. `IComponentCore` which is baseless class, and `IComponent` is a class that inherits `HTMLElement`. `IComponentCore` can be utilized to make lightweight virtual components.
+    - `Renderer` is now handles all the rendering logic, which is a cheap per-instance object created through `createRenderer`
+    - `createRender` is now a creates a `Renderer` per instance.
+    - `utils` have been removed. They are largely redundant, but created as helpers, but scraped to remove unnecessary API surface.
+    - `IFnComponent` is now `IComponentFn`
+    - Previously, `IDefault` only the rendering helpers, it's contents are now inside `Renderer`, which is far more appropriate.
+    - Since `IComponentCore` is now a baseless, class, any object can be made to extend it either with inheritance, or with `IComponentCore.extend` - The latter also requires calling `IComponentCore.init` inside the constructor. 
+
 # v2.0.0
 
 - [**BREAKING**] `renderNow` method is now just called `render`. `queueRender` and `render` is obvious enough, and shorter form is just nicer in large codebases.
