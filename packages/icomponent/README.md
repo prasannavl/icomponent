@@ -230,11 +230,12 @@ class Nav extends LitHtmlComponent {
 
 #### Functional
 
-`IComponentFn` provides functional semantics. Functional components also automatically pass along the DOM attributes as arguments.
+`IComponentFn` provides functional semantics. Functional components also automatically pass along the component itself as the argument.
 
 ```js
 
-let nameIt = (attrs) => {
+let nameIt = (comp) => {
+    let attrs = comp.attributes;
     // attrs is the actual attributes object
     // given out by the DOM. (HTMLElement.attributes)
     return html`
