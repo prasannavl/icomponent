@@ -124,14 +124,14 @@ function componentFn(fn, BaseClass) {
             this.render();
         }
         view() {
-            return fn(this.attributes);
+            return fn(this);
         }
     }
 }
 
 // A functional helper that converts plain function into a 
 // IComponent. Note that this has one additional behavior, 
-// where it passes in the actual DOM attributes as 
+// where it passes in the component itself as 
 // arguments to the functions.
 function IComponentFn(fn) { return componentFn(fn, IHTMLComponent); }
 
