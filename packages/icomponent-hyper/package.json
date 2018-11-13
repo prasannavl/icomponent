@@ -14,6 +14,6 @@
   },
   "peerDependencies": {
     "hyperhtml": "*",
-    "icomponent": ">=2.0.1"
+    "icomponent": ">=3.0.1"
   }
 }
