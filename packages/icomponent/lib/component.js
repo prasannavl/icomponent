@@ -102,11 +102,18 @@ IComponentCore.makeChainExtender = function (baseType) {
 
 IComponentCore.extend = IComponentCore.makeChainExtender(IComponentCore);
 
-
 class IComponent extends HTMLElement {
     constructor() {
         super();
         IComponentCore.init(this);
+    }
+
+    attr(name, defaultValue, transform) {
+        if (this.attributes == null) return defaultValue;
+        let attrItem = this.attributes[name];
+        if (attrItem === undefined) return defaultValue;
+        let v = attrItem.value;
+        return transform != null ? transform(v) : v; 
     }
 }
 IComponentCore.extend(IComponent);
