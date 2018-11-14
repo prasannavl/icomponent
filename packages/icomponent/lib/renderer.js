@@ -46,4 +46,4 @@ let cancel = schedule === setTimeout ? clearTimeout : window.cancelAnimationFram
 Renderer.schedule = schedule.bind(window);
 Renderer.cancel = cancel.bind(window);
 
-export { Renderer, IComponentRenderer };
+export { Renderer, ComponentRenderer };

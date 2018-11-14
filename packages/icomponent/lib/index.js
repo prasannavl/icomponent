@@ -1,2 +1,2 @@
 export { IComponentCore, IComponent, IComponentFn } from "./component";
-export { Renderer } from "./renderer";
+export { Renderer, ComponentRenderer } from "./renderer";

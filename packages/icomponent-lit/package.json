@@ -13,7 +13,7 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "peerDependencies": {
-    "icomponent": ">=3.3.0",
+    "icomponent": ">=3.3.2",
     "lit-html": "*"
   }
 }
