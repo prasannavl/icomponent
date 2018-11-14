@@ -1,4 +1,4 @@
-import { IComponent as IComponentBase, Renderer  } from "icomponent/lib";
+import { IComponent as IComponentBase, ComponentRenderer  } from "icomponent/lib";
 import { componentFn } from "icomponent/lib/component";
 import { render } from "lit-html";
 
@@ -11,7 +11,7 @@ export function litRender() {
 
 export class IComponent extends IComponentBase {
     createRenderer() {
-        return new Renderer(this, litRender.bind(this));
+        return new ComponentRenderer(this, litRender.bind(this));
     }
 }
 

@@ -1,4 +1,4 @@
-import { IComponent as IComponentBase, Renderer  } from "icomponent/lib";
+import { IComponent as IComponentBase, ComponentRenderer  } from "icomponent/lib";
 import { componentFn } from "icomponent/lib/component";
 import { bind } from "hyperhtml";
 
@@ -13,7 +13,7 @@ export function hyperRender() {
 
 export class IComponent extends IComponentBase {
     createRenderer() {
-        return new Renderer(this, hyperRender.bind(this));
+        return new ComponentRenderer(this, hyperRender.bind(this));
     }
 }
 

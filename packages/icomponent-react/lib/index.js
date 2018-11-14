@@ -1,4 +1,4 @@
-import { IComponent as IComponentBase, Renderer  } from "icomponent/lib";
+import { IComponent as IComponentBase, ComponentRenderer  } from "icomponent/lib";
 import { componentFn } from "icomponent/lib/component";
 import { render, unmountComponentAtNode } from "react-dom";
 
@@ -12,7 +12,7 @@ export function reactRender() {
 
 export class IComponent extends IComponentBase {
     createRenderer() {
-        return new Renderer(this, reactRender.bind(this));
+        return new ComponentRenderer(this, reactRender.bind(this));
     }
     disconnected() {
         unmountComponentAtNode(this.getRenderRoot());
