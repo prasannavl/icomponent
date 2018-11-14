@@ -1,6 +1,6 @@
 {
   "name": "icomponent",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "main": "lib/index.js",
   "author": "Prasanna V. Loganathar <pvl@prasannavl.com> (https://www.prasannavl.com)",
   "license": "MIT",
