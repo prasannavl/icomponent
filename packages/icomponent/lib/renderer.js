@@ -28,10 +28,22 @@ class Renderer {
     }
 }
 
+class ComponentRenderer extends Renderer {
+    constructor(component, fn) {
+        super(component, fn);
+    }
+
+    render() {
+        this.component.renderBegin();
+        super.render();
+        this.component.renderEnd();
+    }
+}
+
 Renderer.render = function () { }
 let schedule = window.requestAnimationFrame ? window.requestAnimationFrame : setTimeout;
 let cancel = schedule === setTimeout ? clearTimeout : window.cancelAnimationFrame;
 Renderer.schedule = schedule.bind(window);
 Renderer.cancel = cancel.bind(window);
 
-export { Renderer };
+export { Renderer, IComponentRenderer };

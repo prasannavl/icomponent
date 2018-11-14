@@ -1,3 +1,8 @@
+# v3.3.0
+
+- [add] Introduced `renderBegin` and `renderEnd` methods.
+- [add] `ComponentRenderer` that extends `Renderer` and calls the above render cycle methods.
+
 # v3.2.0
 
 - [add] `attr` method on IComponent that's a helper for raw html attributes.

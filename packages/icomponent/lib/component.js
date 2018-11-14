@@ -51,6 +51,12 @@ class IComponentCore {
     // render.
     attributeChanged(name, oldVal, newVal) { this.queueRender(); }
 
+    // Called by the renderer just before each render.
+    renderBegin() {}
+
+    // Called by the renderer immediately after each render.
+    renderEnd() {}
+
     /// Lifecycle connections
 
     connectedCallback() { this.connected() }

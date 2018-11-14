@@ -1,6 +1,6 @@
 # icomponent
 
-A super simple, **render-agnostic**, *ultra light-weight* micro-framework for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant weighing in at **<1KB** (more like 800 bytes gzipped, really).
+A super simple, **render-agnostic**, *ultra light-weight* micro-framework for the modern web, that provides Component semantics with the highest possible flexibility, lowest possible cognitive overhead and 100% web standards compliant in **under 1KB**.
 
 Let's you use the DOM as framework or bring your framework, use the DOM as renderer or bring your renderer, and let them all talk to each other nicely.
 
@@ -422,6 +422,12 @@ class IComponentCore {
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
     attributeChanged(name, oldVal, newVal) { this.queueRender(); }
+
+    // Called by the renderer just before each render.
+    renderBegin() {}
+
+    // Called by the renderer immediately after each render.
+    renderEnd() {}
 
     /// Lifecycle connections
 
