@@ -158,8 +158,12 @@ class ComponentImpl extends HTMLElement {
     }
 }
 
+interface ComponentStatics {
+    observedAttributes: Array<string>;
+}
+
 ComponentCore.extend(ComponentImpl);
-export interface IComponent extends ComponentImpl, ComponentCore, Constructor<IComponent> { }
+export interface IComponent extends ComponentImpl, ComponentStatics, ComponentCore, Constructor<IComponent> { }
 export const Component: IComponent = ComponentImpl as any;
 
 // The core function that creates IComponentFn.
