@@ -1,6 +1,6 @@
 {
   "name": "icomponent",
-  "version": "4.3.2",
+  "version": "4.3.3",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Prasanna V. Loganathar <pvl@prasannavl.com> (https://www.prasannavl.com)",
