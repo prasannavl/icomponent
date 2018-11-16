@@ -1,3 +1,7 @@
+# v4.3.0
+
+- [change] more generic typing-fu for better ergonomics. `ComponentFn` now works better.
+
 # v4.2.0
 
 - [change] Better and more ergonomic type definitions
