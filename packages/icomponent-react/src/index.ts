@@ -11,9 +11,6 @@ export function reactRender(this: Component) {
 }
 
 export class Component extends ComponentBase {
-    constructor() {
-        super();
-    }
     createRenderer() {
         return new ComponentRenderer(this, reactRender.bind(this));
     }
@@ -23,4 +20,4 @@ export class Component extends ComponentBase {
     }
 }
 
-export function ComponentFn(fn: IComponentFn) { return componentFn(fn, Component as any); }
+export function ComponentFn(fn: IComponentFn) { return componentFn(fn, Component); }

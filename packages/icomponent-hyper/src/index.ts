@@ -18,4 +18,4 @@ export class Component extends ComponentBase {
     }
 }
 
-export function ComponentFn(fn: IComponentFn) { return componentFn(fn, Component as any); }
+export function ComponentFn(fn: IComponentFn) { return componentFn(fn, Component); }

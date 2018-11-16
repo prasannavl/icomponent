@@ -1,3 +1,7 @@
+# v4.2.0
+
+- [change] Better and more ergonomic type definitions
+
 # v4.0.0
 
 - [**BREAKING**] The following have been renamed to simplify things: 

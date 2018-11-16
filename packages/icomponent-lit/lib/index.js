@@ -8,6 +8,7 @@ export function litRender() {
 }
 export class Component extends ComponentBase {
     createRenderer() {
+        super.style;
         return new ComponentRenderer(this, litRender.bind(this));
     }
 }

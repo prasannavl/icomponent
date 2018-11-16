@@ -14,7 +14,7 @@ Compared to other similar wrappers and/or so called lightweight components, `ico
 npm install icomponent
 ```
 
-As of v2.0.0, only es6 modules are provided. (See [changelog](https://github.com/prasannavl/icomponent/blob/master/CHANGELOG.md#v200))
+As of v2.0.0, only es6 modules are provided. (See [changelog](https://github.com/prasannavl/icomponent/blob/master/CHANGELOG.md#v200)). Written in TypeScript, and as such, definitions are included.
 
 #### Currently supported adaptors
 
