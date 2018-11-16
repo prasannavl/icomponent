@@ -502,7 +502,8 @@ class ComponentImpl extends HTMLElement {
     }
 }
 ComponentCore.extend(ComponentImpl);
-export const Component: IComponentCore & ComponentImpl = ComponentImpl as any;
+export interface IComponent extends ConstructableComponent, ComponentImpl {};
+export const Component: IComponent = ComponentImpl as any;
 ```
 
 And finally the `Renderer`:

@@ -1,4 +1,4 @@
-import { ComponentCore as ComponentCoreBase, ComponentRenderer } from "icomponent/lib/index";
+import { Component as ComponentBase, ComponentRenderer } from "icomponent/lib/index";
 import { componentFn } from "icomponent/lib/component";
 import { bind } from "hyperhtml";
 export { ComponentCore } from "icomponent/lib/index";
@@ -8,7 +8,7 @@ export function hyperRender() {
     // workaround hyperhtml ts definition bug
     bind(this.getRenderRoot())(...this.view());
 }
-export class Component extends ComponentCoreBase {
+export class Component extends ComponentBase {
     createRenderer() {
         return new ComponentRenderer(this, hyperRender.bind(this));
     }

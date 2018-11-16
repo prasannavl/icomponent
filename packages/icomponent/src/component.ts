@@ -160,7 +160,8 @@ class ComponentImpl extends HTMLElement {
     }
 }
 ComponentCore.extend(ComponentImpl);
-export const Component: IComponentCore & ComponentImpl = ComponentImpl as any;
+export interface IComponent extends ConstructableComponent, ComponentImpl {};
+export const Component: IComponent = ComponentImpl as any;
 
 // The core function that create IComponentFn.
 // This takes the base from which IComponentFn has

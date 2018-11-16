@@ -1,4 +1,4 @@
-import { ComponentCore as ComponentCoreBase, ComponentRenderer } from "icomponent/lib/index";
+import { Component as ComponentBase, ComponentRenderer } from "icomponent/lib/index";
 import { componentFn } from "icomponent/lib/component";
 import { render, unmountComponentAtNode } from "react-dom";
 export { ComponentCore } from "icomponent/lib";
@@ -7,7 +7,10 @@ export { render } from "react-dom";
 export function reactRender() {
     render(this.view(), this.getRenderRoot());
 }
-export class Component extends ComponentCoreBase {
+export class Component extends ComponentBase {
+    constructor() {
+        super();
+    }
     createRenderer() {
         return new ComponentRenderer(this, reactRender.bind(this));
     }

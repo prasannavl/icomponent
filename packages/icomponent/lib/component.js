@@ -65,6 +65,7 @@ class ComponentImpl extends HTMLElement {
     }
 }
 ComponentCore.extend(ComponentImpl);
+;
 export const Component = ComponentImpl;
 // The core function that create IComponentFn.
 // This takes the base from which IComponentFn has
