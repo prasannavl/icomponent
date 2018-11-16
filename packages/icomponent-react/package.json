@@ -23,7 +23,7 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
-    "icomponent": "^4.3.0",
+    "icomponent": "^4.3.1",
     "react": "*",
     "react-dom": "*"
   }

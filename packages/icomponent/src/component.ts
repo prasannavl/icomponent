@@ -144,17 +144,20 @@ ComponentCore.makeClassExtender = function <T extends Constructor<{}>, R extends
 ComponentCore.extend = ComponentCore.makeClassExtender(ComponentCore);
 
 class ComponentImpl extends HTMLElement {
+    static observedAttributes: Array<string> = [];
+
     constructor() {
         super();
         ComponentCore.init(this);
     }
 
-    attr(name: string, defaultValue: any, transform: (val: string) => any) {
+    attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
         let val = this.getAttribute(name);
         if (val == null) return defaultValue;
         return transform != null ? transform(val) : val;
     }
 }
+
 ComponentCore.extend(ComponentImpl);
 export interface IComponent extends ComponentImpl, ComponentCore, Constructor<IComponent> { }
 export const Component: IComponent = ComponentImpl as any;

@@ -1,3 +1,8 @@
+# v4.3.1
+
+- [add] default `observedAttributes`
+- [change] [ts] make `attr` params optional  
+
 # v4.3.0
 
 - [change] more generic typing-fu for better ergonomics. `ComponentFn` now works better.
