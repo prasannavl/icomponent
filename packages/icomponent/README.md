@@ -22,9 +22,9 @@ As of v2.0.0, only es6 modules are provided. (See [changelog](https://github.com
 - `icomponent-lit` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-lit)]: [lit-html](https://github.com/Polymer/lit-html) 
 - `icomponent-hyper` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-hyper)]: [hyperhtml](https://github.com/WebReflection/hyperHTML) 
 
-Install the above npm packages directly, if you prefer not to use your own renderer. They generally include the upstream package as well as `icomponent` as `peer dependencies`.
+Install the above npm packages directly, if you prefer not to use your own renderer. They generally include the upstream package as well as `icomponent` as `dependencies`.
 
-All of the above packages provide an exact interface as `icomponent`. That is, `icomponent` exports `IComponent` that has a no-op renderer by default (which can be changed by setting `Renderer.render`) `icomponent-lit` provides `IComponent` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
+All of the above packages provide an exact interface as `icomponent`. That is, `icomponent` exports `Component` that has a no-op renderer by default (which can be changed by setting `Renderer.render`) `icomponent-lit` provides `Component` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
 
 They also usually re-export some handy ones from the upstream packages for convenience. The component specific README should have more information. 
 
@@ -36,7 +36,7 @@ To use directly, in the browser.
 
 ```js
 <script type="module">
-  import { IComponent } from 'https://unpkg.com/icomponent@latest/lib/index.js';
+  import { Component } from 'https://unpkg.com/icomponent@latest/lib/index.js';
 </script>
 ```
 
@@ -99,10 +99,10 @@ Using `icomponent-lit` or `icomponent-hyper`
 // Both these adaptors use the exact same code. Use
 // whichever you prefer and comment the other. 
 
-// import { IComponent, html } from "icomponent-lit";
-import { IComponent, html } from "icomponent-hyper";
+// import { Component, html } from "icomponent-lit";
+import { Component, html } from "icomponent-hyper";
 
-class App extends IComponent {
+class App extends Component {
   view() {
         return html`
         <div>Hello world!</div>
@@ -121,10 +121,10 @@ customElements.define("x-app", App);
 #### Basic using react
 
 ```js
-import { IComponent } from "icomponent-react";
+import { Component } from "icomponent-react";
 import React from "react";
 
-class App extends IComponent {
+class App extends Component {
     
   // Yup, full goodness of react with jsx!
   // While this component is now managed by react, you can 
@@ -146,11 +146,11 @@ customElements.define("x-app", App);
 #### Converting an existing react component into a web-component 
 
 ```js
-import { IComponentFn } from "icomponent-react";
+import { ComponentFn } from "icomponent-react";
 import React from "react";
 import MySuperCoolReactComponent from "./my-component";
 
-customElements.define("my-component", IComponentFn(() => MySuperCoolReactComponent));
+customElements.define("my-component", ComponentFn(() => MySuperCoolReactComponent));
 
 // HTML
 // <html><my-component></my-component></html>
@@ -164,7 +164,7 @@ Yup. That's it. One line, and you get a full `icomponent` goodness, with the rea
 This is the same one, using `lit-html`, but without any adaptors, overriding the default renderer.
 
 ```js
-import { IComponent, Renderer } from "icomponent";
+import { Component, Renderer } from "icomponent";
 import { html, render } from "lit-html";
 
 // Set the render function. By default it's a noop.
@@ -175,7 +175,7 @@ import { html, render } from "lit-html";
 // component by default.
 Renderer.render = (c) => render(c.view(), c.getRenderRoot());
 
-class App extends IComponent {
+class App extends Component {
   view() {
         return html`
         <div>Hello world!</div>
@@ -195,10 +195,10 @@ Same as the above, but without using any adaptor, or overriding the default rend
 This implementation is also similar to what the adaptors do internally.
 
 ```js
-import { IComponent, Renderer } from "icomponent";
+import { Component, Renderer } from "icomponent";
 import { html, render } from "lit-html";
 
-class LitHtmlComponent extends IComponent {
+class LitHtmlComponent extends Component {
    // Override this function to change any rendering logic.
    // This can use hyperhtml, React, Vue, or any custom logic
    // as desired.
@@ -230,7 +230,7 @@ class Nav extends LitHtmlComponent {
 
 #### Functional
 
-`IComponentFn` provides functional semantics. Functional components also automatically pass along the component itself as the argument.
+`ComponentFn` provides functional semantics. Functional components also automatically pass along the component itself as the argument.
 
 ```js
 
@@ -243,7 +243,7 @@ let nameIt = (comp) => {
     `;
 }
 
-customElements.define("hello-component", IComponentFn(nameIt));
+customElements.define("hello-component", ComponentFn(nameIt));
 
 // HTML
 // <html><hello-component name="Jane"></hello-component></html>
@@ -253,7 +253,7 @@ customElements.define("hello-component", IComponentFn(nameIt));
 
 ```js
 
-class App extends IComponent {
+class App extends Component {
   constructor() {
       super();
       this.time = new Date();
@@ -297,7 +297,7 @@ class App extends IComponent {
 
 ```js
 
-class App extends IComponent {
+class App extends Component {
   constructor() {
       super();
       // If you wish to be stateless, you can pass it
@@ -369,73 +369,60 @@ class App extends IComponent {
 The entire API is so tiny and simple. You're probably better of reading the source,
 so you know exactly what it does internally as well.
 
-Here's the `IComponentCore`: 
+Here's the `ComponentCore`: 
 
-```js
+```ts
 // An ultra-light weight, super-simple component
-class IComponentCore {
-    constructor() {
-        IComponent.init(this);
-    }
-
+export interface IComponentCore {
     /// Rendering
 
     // Creates a new renderer for the element. Renderer is a per-instance
     // lightweight object that schedules rendering. The actual rendering
     // can also be overridden with it's constructor.
-    createRenderer() {
-        return new Renderer(this);
-    }
+    createRenderer(): IRenderer;
 
     // Simply returns the next view representation.
     // It's recommended to have this as a pure function.
-    view() { }
+    view(): any;
 
     // Provide the root for the rendering. By default, it provides back the 
     // element itself (self). If a Shadow DOM is used/needed, then this
     // method can be overridden to return the shadow root instead.
-    getRenderRoot() { return this; }
+    getRenderRoot(): any;
 
     // Render immediately.
-    render() { this.renderer.render(); }
+    render(): void;
     // Queue a render using the scheduler.
-    queueRender() { this.renderer.schedule(); }
+    queueRender(): void;
     // Clear any previously scheduled render.
-    clearRenderQueue() { this.renderer.cancel(); }
+    clearRenderQueue(): void;
+
+    // Called by the renderer just before each render.
+    renderBegin(): void;
+
+    // Called by the renderer immediately after each render.
+    renderEnd(): void;
 
     /// Lifecycle
 
     // When element is a part of the DOM tree.
     // called by connectedCallback. Default action is to queue a 
     // render.
-    connected() { this.queueRender(); }
-    
+    connected(): void;
+
     // When element is removed from the DOM tree.
     // called by disconnectedCallback. Default action is to clear any 
     // scheduled renders.
-    disconnected() { this.clearRenderQueue(); }
-    
-    // Called by adoptedCallback. Default action is to queue a 
+    disconnected(): void;
+
+    // Called by adoptedCallback. Default action is to queue a
     // render.
-    adopted() { this.queueRender(); }
+    adopted(): void;
 
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
-    attributeChanged(name, oldVal, newVal) { this.queueRender(); }
-
-    // Called by the renderer just before each render.
-    renderBegin() {}
-
-    // Called by the renderer immediately after each render.
-    renderEnd() {}
-
-    /// Lifecycle connections
-
-    connectedCallback() { this.connected() }
-    disconnectedCallback() { this.disconnected() }
-    adoptedCallback() { this.adopted() }
-    attributeChangedCallback(name, oldValue, newValue) { this.attributeChanged(name, oldValue, newValue) }
-
+    attributeChanged(name: string, prev: string, val: string): void;
+    
     /// State management
 
     // A method for handling state mutations and additional renders.
@@ -446,39 +433,91 @@ class IComponentCore {
     // Note that scheduling and clearing renders are extremely cheap
     // as long as it's in the same cycle before renders. So, use them 
     // freely.
-    update(msg, val) {
-        return true;
-    }
+    update(msg: any, val?: any): boolean;
 
     // Ideally, designed for dispatching an message which calls the update
     // fn, through which state mutation can be handled from one place.
-    dispatch(msg, val) {
+    dispatch(msg: any, val?: any): void;
+}
+```
+
+Here's the actual impl: 
+
+```ts
+    constructor() {
+        ComponentCore.init(this);
+    }
+
+    createRenderer(): IRenderer {
+        return new Renderer(this);
+    }
+
+    view(): any { }
+
+    getRenderRoot() { return this; }
+    render() { this.renderer.render(); }
+    queueRender() { this.renderer.schedule(); }
+    clearRenderQueue() { this.renderer.cancel(); }
+    renderBegin() {}
+    renderEnd() {}
+
+    /// Lifecycle
+
+    connected() { this.queueRender(); }
+    disconnected() { this.clearRenderQueue(); }
+    adopted() { this.queueRender(); }
+    attributeChanged(name: string, prev: string, val: string) { this.queueRender(); }
+
+    /// Lifecycle connections
+
+    connectedCallback() { this.connected() }
+    disconnectedCallback() { this.disconnected() }
+    adoptedCallback() { this.adopted() }
+    attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
+
+    update(msg: any, val?: any) {
+        return true;
+    }
+
+    dispatch(msg: any, val?: any) {
         if (this.update(msg, val))
             this.queueRender();
     }
-}
 ```
 
-And now, the `IComponent`, which is just an `IComponentCore` that inherits `HTMLElement`.
 
-```js
-class IComponent extends HTMLElement {
+And now, the `Component`, which is just an `ComponentCore` that inherits `HTMLElement`, with some convenience extras
+
+```ts
+class ComponentImpl extends HTMLElement {
     constructor() {
         super();
-        IComponentCore.init(this);
+        ComponentCore.init(this);
+    }
+
+    attr(name: string, defaultValue: any, transform: (val: string) => any) {
+        let val = this.getAttribute(name);
+        if (val == null) return defaultValue;
+        return transform != null ? transform(val) : val;
     }
 }
-IComponentCore.extend(IComponent);
+ComponentCore.extend(ComponentImpl);
+export const Component: IComponentCore & ComponentImpl = ComponentImpl as any;
 ```
 
-And finally `Renderer`:
+And finally the `Renderer`:
 
-```js
-class Renderer {
-    constructor(component, fn) {
-        this.renderQueueToken = null;
-        this.component = component;
-        this.fn = fn || Renderer.render;
+```ts
+export class Renderer implements IRenderer {
+    static render: RenderFn;
+    static schedule: (render: RenderFn) => RenderQueueToken;
+    static cancel: (renderQueueToken: RenderQueueToken) => void;
+
+    renderQueueToken: number | null = null;
+
+    constructor(
+        protected component: ComponentType,
+        protected fn: RenderFn = Renderer.render) {
         // Provide an early binding since this can get passed
         // into the scheduler repeatedly.
         this.render = this.render.bind(this);
@@ -537,6 +576,6 @@ The default action of connected is to `queueRender`, so that a render is perform
 
 This provides the advantage of being lazy, and having the flexibility to act both ways.
 
-- **Uncaught TypeError: Class constructor IComponent cannot be invoked without 'new'**
+- **Uncaught TypeError: Class constructor Component cannot be invoked without 'new'**
 
 This can happen with bundlers like `parcel`. This basically means parcel is configured incorrectly and an ES5 class is extending an ES6 class. Try adding `"browserslist: 'last 2 Chrome versions'` (which supports ES6 classes natively) to your `package.json` and check. If that works, that confirms the issue.

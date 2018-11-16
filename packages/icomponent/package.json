@@ -1,9 +1,14 @@
 {
   "name": "icomponent",
-  "version": "3.3.2",
+  "version": "4.0.0",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "author": "Prasanna V. Loganathar <pvl@prasannavl.com> (https://www.prasannavl.com)",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/prasannavl/icomponent.git"
@@ -20,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
-  "homepage": "https://github.com/prasannavl/icomponent"
+  "homepage": "https://github.com/prasannavl/icomponent",
+  "devDependencies": {
+    "typescript": "^3.1.6"
+  }
 }

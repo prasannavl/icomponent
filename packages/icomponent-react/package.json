@@ -5,6 +5,11 @@
   "homepage": "https://github.com/prasannavl/icomponent",
   "license": "MIT",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/prasannavl/icomponent.git"
@@ -12,8 +17,13 @@
   "bugs": {
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
-  "peerDependencies": {
-    "icomponent": ">=3.3.2",
+  "devDependencies": {
+    "typescript": "^3.1.6",
+    "@types/react": "*",
+    "@types/react-dom": "*"
+  },
+  "dependencies": {
+    "icomponent": ">=4.0.0",
     "react": "*",
     "react-dom": "*"
   }

@@ -1,3 +1,11 @@
+# v4.0.0
+
+- [**BREAKING**] The following have been renamed to simplify things: 
+    - `IComponentCore` -> `ComponentCore`
+    - `IComponent` -> `Component`
+    - `IComponentFn` -> `ComponentFn`
+- [change] The project is now re-written in TypeScript, providing the `I` prefixed versions as interfaces. 
+
 # v3.3.0
 
 - [add] Introduced `renderBegin` and `renderEnd` methods.
