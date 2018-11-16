@@ -1,4 +1,4 @@
-import { Component as ComponentBase, ComponentRenderer, IComponentFn } from "icomponent/lib/index";
+import { Component as ComponentBase, ComponentRenderer, IComponentFn, IRenderer } from "icomponent/lib/index";
 import { componentFn } from "icomponent/lib/component";
 import { render, unmountComponentAtNode } from "react-dom";
 
@@ -11,7 +11,7 @@ export function reactRender(this: Component) {
 }
 
 export class Component extends ComponentBase {
-    createRenderer() {
+    createRenderer(): IRenderer {
         return new ComponentRenderer(this, reactRender.bind(this));
     }
     disconnected() {
@@ -20,4 +20,6 @@ export class Component extends ComponentBase {
     }
 }
 
-export function ComponentFn(fn: IComponentFn) { return componentFn(fn, Component); }
+export function ComponentFn(fn: IComponentFn<Component>): Component {
+    return componentFn(fn, Component);
+}

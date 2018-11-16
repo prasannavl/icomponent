@@ -4,9 +4,6 @@ export interface Constructor<T> {
     new(...args: any[]): T
 }
 
-// A function that you can pass into ComponentFn 
-export type IComponentFn = (comp: IComponentCore) => void;
-
 export interface IComponentCore {
     /// Rendering
 
@@ -159,14 +156,16 @@ class ComponentImpl extends HTMLElement {
     }
 }
 ComponentCore.extend(ComponentImpl);
-export interface IComponent extends ComponentImpl, ComponentCore, Constructor<ComponentImpl & ComponentCore> { };
+export interface IComponent extends ComponentImpl, ComponentCore, Constructor<IComponent> { }
 export const Component: IComponent = ComponentImpl as any;
 
 // The core function that creates IComponentFn.
 // This takes the base from which IComponentFn has
 // to extend.
 
-export function componentFn<T extends Constructor<IComponentCore>>(fn: IComponentFn, BaseClass: T): T {
+export interface IConstructableComponentCore extends Constructor<IComponentCore>, IComponentCore {}
+
+export function componentFn<T extends IConstructableComponentCore>(fn: IComponentFn<T>, BaseClass: T): T {
     if (!fn) throw new TypeError("invalid fn");
     return class extends BaseClass {
         connected() {
@@ -175,15 +174,18 @@ export function componentFn<T extends Constructor<IComponentCore>>(fn: IComponen
             this.render();
         }
         view(): any {
-            return fn(this);
+            return fn(this as any);
         }
     };
 }
+
+// A function that you can pass into ComponentFn 
+export type IComponentFn<T> = (comp: T) => void;
 
 // A functional helper that converts plain function into a 
 // IComponent. Note that this has one additional behavior, 
 // where it passes in the component itself as 
 // arguments to the functions.
-export function ComponentFn(fn: IComponentFn): IComponentCore {
+export function ComponentFn(fn: IComponentFn<IComponent>): IComponent {
     return componentFn(fn, Component);
 }
