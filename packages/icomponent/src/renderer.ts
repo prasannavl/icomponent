@@ -43,6 +43,12 @@ export class Renderer implements IRenderer {
     }
 }
 
+export class NoopRenderer implements IRenderer {
+    render(): void {}
+    schedule(): void {}
+    cancel(): void {}
+}
+
 export class ComponentRenderer extends Renderer {
     render() {
         this.component.renderBegin();
