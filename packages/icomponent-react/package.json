@@ -1,6 +1,6 @@
 {
   "name": "icomponent-react",
-  "version": "3.3.2",
+  "version": "4.0.0",
   "author": "Prasanna Loganathar <pvl@prasannavl.com>",
   "homepage": "https://github.com/prasannavl/icomponent",
   "license": "MIT",
@@ -18,12 +18,12 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "devDependencies": {
-    "typescript": "^3.1.6",
     "@types/react": "*",
-    "@types/react-dom": "*"
+    "@types/react-dom": "*",
+    "typescript": "^3.1.6"
   },
   "dependencies": {
-    "icomponent": ">=4.0.0",
+    "icomponent": "^4.0.0",
     "react": "*",
     "react-dom": "*"
   }
