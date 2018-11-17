@@ -1,20 +1,18 @@
-import { Component as ComponentBase, ComponentRenderer, IComponentFn, IRenderer } from "icomponent/lib/index";
-import { componentFn } from "icomponent/lib/component";
+import { Component, ComponentRenderer, IComponentFn, IRenderer, makeComponentFn } from "icomponent/lib/index";
 import { render } from "lit-html";
 
-export { ComponentCore } from "icomponent/lib";
-export { html } from "lit-html";
+export { html, render } from "lit-html";
 
-export function litRender(this: Component) {
+export function litRenderer(this: LitComponent) {
     render(this.view(), this.getRenderRoot() as any);
 }
 
-export class Component extends ComponentBase {
+export class LitComponent extends Component {
     createRenderer(): IRenderer {
-        return new ComponentRenderer(this, litRender.bind(this));
+        return new ComponentRenderer(this, litRenderer.bind(this));
     }
 }
 
-export function ComponentFn(fn: IComponentFn<Component>): Component {
-    return componentFn(fn, Component);
+export function LitComponentFn(fn: IComponentFn<LitComponent>): LitComponent {
+    return makeComponentFn(fn, LitComponent);
 }

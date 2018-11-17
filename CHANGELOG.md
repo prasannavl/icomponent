@@ -1,3 +1,16 @@
+# v5.0.0
+
+- [**BREAKING**]
+    - `Component` now only refers to the plain component with a renderer that does nothing.
+    - `ComponentFn` follows the same convention as above.
+    - Dedicated components are prefixed - for instance, `LitComponent` refers to the component impl that uses `lit-html`, `ReactComponent` for react, etc.
+    - Being explicit seems to make the codebase less confusing and lot better to work with.
+    - support adapters no longer export `icomponent` primitives. For the advantage of saving adding one dependency manually, this only added more confusion than worth. The semantics are just simpler to add it and use it manually if needed.  
+
+- [internal]
+    - `core` - an internal module for the base interfaces and methods
+    - `component` - provides the default `Component` impl and `ComponentFn`
+
 # v4.3.1
 
 - [add] default `observedAttributes`

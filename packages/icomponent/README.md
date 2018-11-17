@@ -18,13 +18,13 @@ As of v2.0.0, only es6 modules are provided. (See [changelog](https://github.com
 
 #### Currently supported adaptors
 
-- `icomponent-react` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-react)]: [react](https://github.com/facebook/react) 
 - `icomponent-lit` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-lit)]: [lit-html](https://github.com/Polymer/lit-html) 
 - `icomponent-hyper` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-hyper)]: [hyperhtml](https://github.com/WebReflection/hyperHTML) 
+- `icomponent-react` [[info](https://github.com/prasannavl/icomponent/tree/master/packages/icomponent-react)]: [react](https://github.com/facebook/react) 
 
 Install the above npm packages directly, if you prefer not to use your own renderer. They generally include the upstream package as well as `icomponent` as `dependencies`.
 
-All of the above packages provide an exact interface as `icomponent`. That is, `icomponent` exports `Component` that has a no-op renderer by default (which can be changed by setting `Renderer.render`) `icomponent-lit` provides `Component` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
+All of the above packages provide an implementation of `Component` such as `LitComponent`, `ReactComponent`, etc. The function of these adapters are simple - `icomponent` exports `Component` that has a no-op renderer by default (which can be changed by setting `Renderer.render`), `icomponent-lit` adapter provides `LitComponent` that by default uses the `lit-html` as the renderer backend. Similarly for the others. 
 
 They also usually re-export some handy ones from the upstream packages for convenience. The component specific README should have more information. 
 
@@ -99,8 +99,8 @@ Using `icomponent-lit` or `icomponent-hyper`
 // Both these adaptors use the exact same code. Use
 // whichever you prefer and comment the other. 
 
-// import { Component, html } from "icomponent-lit";
-import { Component, html } from "icomponent-hyper";
+import { LitComponent as Component, html } from "icomponent-lit";
+// import { HyperComponent as Component, html } from "icomponent-hyper";
 
 class App extends Component {
   view() {
@@ -121,10 +121,10 @@ customElements.define("x-app", App);
 #### Basic using react
 
 ```js
-import { Component } from "icomponent-react";
+import { ReactComponent } from "icomponent-react";
 import React from "react";
 
-class App extends Component {
+class App extends ReactComponent {
     
   // Yup, full goodness of react with jsx!
   // While this component is now managed by react, you can 
@@ -146,11 +146,11 @@ customElements.define("x-app", App);
 #### Converting an existing react component into a web-component 
 
 ```js
-import { ComponentFn } from "icomponent-react";
+import { ReactComponentFn } from "icomponent-react";
 import React from "react";
 import MySuperCoolReactComponent from "./my-component";
 
-customElements.define("my-component", ComponentFn(() => MySuperCoolReactComponent));
+customElements.define("my-component", ReactComponentFn(() => MySuperCoolReactComponent));
 
 // HTML
 // <html><my-component></my-component></html>
@@ -204,7 +204,7 @@ class LitHtmlComponent extends Component {
    // as desired.
     createRenderer() {
         // The icomponent-lit does the exact same thing conceptually,
-        // just in a more optimized way.
+        // just in a slightly more optimized way.
         return new Renderer(this, () => render(this.view(), this.getRenderRoot()));
     }
 }
@@ -249,11 +249,13 @@ customElements.define("hello-component", ComponentFn(nameIt));
 // <html><hello-component name="Jane"></hello-component></html>
 ```
 
+Use the appropriate `ComponentFn` like `LitComponentFn`, `ReactComponentFn` etc directly if you use the supported adapters.
+
 #### Timer
 
 ```js
 
-class App extends Component {
+class App extends LitComponent {
   constructor() {
       super();
       this.time = new Date();
@@ -297,7 +299,7 @@ class App extends Component {
 
 ```js
 
-class App extends Component {
+class App extends LitComponent {
   constructor() {
       super();
       // If you wish to be stateless, you can pass it
@@ -490,19 +492,26 @@ And now, the `Component`, which is just an `ComponentCore` that inherits `HTMLEl
 
 ```ts
 class ComponentImpl extends HTMLElement {
+    static observedAttributes: Array<string> = [];
+
     constructor() {
         super();
         ComponentCore.init(this);
     }
 
-    attr(name: string, defaultValue: any, transform: (val: string) => any) {
+    attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
         let val = this.getAttribute(name);
         if (val == null) return defaultValue;
         return transform != null ? transform(val) : val;
     }
 }
+
+interface ComponentStatics {
+    observedAttributes: Array<string>;
+}
+
 ComponentCore.extend(ComponentImpl);
-export interface IComponent extends ConstructableComponent, ComponentImpl {};
+export interface IComponent extends ComponentImpl, ComponentStatics, ComponentCore, Constructor<IComponent> { }
 export const Component: IComponent = ComponentImpl as any;
 ```
 
@@ -579,4 +588,4 @@ This provides the advantage of being lazy, and having the flexibility to act bot
 
 - **Uncaught TypeError: Class constructor Component cannot be invoked without 'new'**
 
-This can happen with bundlers like `parcel`. This basically means parcel is configured incorrectly and an ES5 class is extending an ES6 class. Try adding `"browserslist: 'last 2 Chrome versions'` (which supports ES6 classes natively) to your `package.json` and check. If that works, that confirms the issue.
+This can happen with bundlers like `parcel`. This basically means parcel is configured incorrectly and an ES5 class is extending an ES6 class. Try adding `"browserslist: 'last 2 Chrome versions'` (which supports ES6 classes natively) to your `package.json` and check. That should confirm the issue. If you need ES5, you need configure the your bundlers to compile icomponent and it's adapters into ES5 as well.

@@ -18,7 +18,7 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "dependencies": {
-    "icomponent": "^4.3.3",
+    "icomponent": "^5.0.0",
     "lit-html": "*"
   },
   "devDependencies": {

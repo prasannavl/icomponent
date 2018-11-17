@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "hyperhtml": "*",
-    "icomponent": "^4.3.3"
+    "icomponent": "^5.0.0"
   },
   "devDependencies": {
     "typescript": "^3.1.6"

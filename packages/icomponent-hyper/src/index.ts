@@ -1,23 +1,21 @@
-import { Component as ComponentBase, ComponentRenderer, IComponentFn, IRenderer } from "icomponent/lib/index";
-import { componentFn } from "icomponent/lib/component";
+import { Component, ComponentRenderer, IComponentFn, IRenderer, makeComponentFn } from "icomponent/lib/index";
 import { bind } from "hyperhtml";
 
-export { ComponentCore } from "icomponent/lib/index";
 export { bind, wire } from "hyperhtml";
 
 export const html = (...args: any[]) => args;
 
-export function hyperRender(this: Component) {
+export function hyperRenderer(this: HyperComponent) {
     // workaround hyperhtml ts definition bug
     (bind as any)(this.getRenderRoot() as any)(...this.view());
 }
 
-export class Component extends ComponentBase {
+export class HyperComponent extends Component {
     createRenderer(): IRenderer {
-        return new ComponentRenderer(this, hyperRender.bind(this));
+        return new ComponentRenderer(this, hyperRenderer.bind(this));
     }
 }
 
-export function ComponentFn(fn: IComponentFn<Component>): Component {
-    return componentFn(fn, Component);
+export function HyperComponentFn(fn: IComponentFn<HyperComponent>): HyperComponent {
+    return makeComponentFn(fn, HyperComponent);
 }
