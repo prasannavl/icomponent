@@ -49,22 +49,6 @@ export interface IComponentCore {
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
     attributeChanged(name: string, prev: string, val: string): void;
-    
-    /// State management
-
-    // A method for handling state mutations and additional renders.
-    // Takes a message and value. Returning false, prevent scheduling
-    // another render. Default is to schedule another render on 
-    // update. 
-    // 
-    // Note that scheduling and clearing renders are extremely cheap
-    // as long as it's in the same cycle before renders. So, use them 
-    // freely.
-    update(msg: any, val?: any): boolean;
-
-    // Ideally, designed for dispatching an message which calls the update
-    // fn, through which state mutation can be handled from one place.
-    dispatch(msg: any, val?: any): void;
 }
 
 export interface Constructor<T> {
@@ -110,15 +94,6 @@ export class ComponentCore implements IComponentCore {
     disconnectedCallback() { this.disconnected() }
     adoptedCallback() { this.adopted() }
     attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
-
-    update(msg: any, val?: any) {
-        return true;
-    }
-
-    dispatch(msg: any, val?: any) {
-        if (this.update(msg, val))
-            this.queueRender();
-    }
 }
 
 ComponentCore.init = function (comp: any) {

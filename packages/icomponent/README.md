@@ -62,7 +62,7 @@ For implementation specific packages, you need to have the correct packages in s
 - It only uses W3C standards, and simply sits on top of the Custom Elements API providing similar conventions.
 - Provides an extremely simple Elm like *suggestion* for dealing with state, but it's really upto to you.
 - It's provides `queueRender`, `render`, and `clearRenderQueue` - all of them do what they precisely say. No misnomer or complications like in `React` where `render` actually means, return a view. (I'd actually call it a design bug in React. It has nothing to do with rendering. It just builds a view - I'd have called it `view`).
-- Explicit control of rendering. You say, when and where to render. But has very sensible automatic rendering logic that's extremely simply to understand, like when an load, update, attribute changes, etc. But everything can be overriden.
+- Explicit control of rendering. You say, when and where to render. But has very sensible automatic rendering logic that's extremely simply to understand, like when an load, attribute changes, etc. But everything can be overriden.
 - Operates natively on the DOM. There's no VDOM overhead unless you bring it with you (which you happily can, of course!)
 
 <!-- ##### -->
@@ -128,8 +128,8 @@ class App extends ReactComponent {
     
   // Yup, full goodness of react with jsx!
   // While this component is now managed by react, you can 
-  // use any icomponent methods as well like `update`, `render`, 
-  // `queueRender`, `dispatch`, etc and the whole shebang.
+  // use any icomponent methods as well like `render`, 
+  // `queueRender`, etc and the whole shebang.
   view() {
       return <SomeReactComponent>
         <div>Hello world!</div>
@@ -317,7 +317,7 @@ class App extends LitComponent {
       super.connected();
 
       this.timerHandle = setInterval(() => {
-         this.dispatch("tick", new Date());
+         this.update("tick", new Date());
       }, 1000);
 
       // Ah, because we can! Also, we already know that we've already rendered
@@ -336,16 +336,16 @@ class App extends LitComponent {
       switch (msg) {
           case "tick": { this.time = val; break; }
           case "skip": { 
-              // This returns false, so render doesn't get scheduled.
-              return false;
+              // This returns, so render doesn't get scheduled.
+              return;
           }
           case "evil": {
               this.querySelector("div").innerText = "HAHAHA!";
               this.render();
-              return false;
+              return;
           }
       }
-      return super.update();
+      this.queueRender();
   }
 
   view() {
@@ -424,22 +424,6 @@ export interface IComponentCore {
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
     attributeChanged(name: string, prev: string, val: string): void;
-    
-    /// State management
-
-    // A method for handling state mutations and additional renders.
-    // Takes a message and value. Returning false, prevent scheduling
-    // another render. Default is to schedule another render on 
-    // update. 
-    // 
-    // Note that scheduling and clearing renders are extremely cheap
-    // as long as it's in the same cycle before renders. So, use them 
-    // freely.
-    update(msg: any, val?: any): boolean;
-
-    // Ideally, designed for dispatching an message which calls the update
-    // fn, through which state mutation can be handled from one place.
-    dispatch(msg: any, val?: any): void;
 }
 ```
 
@@ -477,14 +461,6 @@ Here's the actual impl:
     adoptedCallback() { this.adopted() }
     attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
 
-    update(msg: any, val?: any) {
-        return true;
-    }
-
-    dispatch(msg: any, val?: any) {
-        if (this.update(msg, val))
-            this.queueRender();
-    }
 ```
 
 
