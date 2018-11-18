@@ -1,3 +1,8 @@
+# v5.1.0
+
+- [change] State management methods have been removed entirely. They are simple enough that the application can choose to write them manually. So much so that, in most change it wouldn't even be a breaking change. So no need to keep them in the core interfaces.
+- [remove] `update`, `dispatch` 
+
 # v5.0.0
 
 - [**BREAKING**]
