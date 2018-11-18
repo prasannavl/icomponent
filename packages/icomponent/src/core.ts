@@ -98,9 +98,6 @@ export class ComponentCore implements IComponentCore {
 
 ComponentCore.init = function (comp: any) {
     comp.renderer = comp.createRenderer();
-    // This is bound early for convenience,
-    // to be able to use in jsx/template html events.
-    comp.dispatch = comp.dispatch.bind(comp);
 }
 
 ComponentCore.makeClassExtender = function <T extends Constructor<{}>, R extends Constructor<{}>>(baseType: T) {
