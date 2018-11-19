@@ -1,5 +1,6 @@
 import { Component, ComponentRenderer, IComponentFn, IRenderer, makeComponentFn } from "icomponent/lib/index";
 import { bind } from "hyperhtml";
+import { Constructor } from "icomponent/lib/core";
 
 export { bind, wire } from "hyperhtml";
 
@@ -16,6 +17,6 @@ export class HyperComponent extends Component {
     }
 }
 
-export function HyperComponentFn(fn: IComponentFn<HyperComponent>): HyperComponent {
+export function HyperComponentFn(fn: IComponentFn<HyperComponent>) {
     return makeComponentFn(fn, HyperComponent);
 }

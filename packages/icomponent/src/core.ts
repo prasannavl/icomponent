@@ -49,83 +49,62 @@ export interface IComponentCore {
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
     attributeChanged(name: string, prev: string, val: string): void;
+
+    /// State management
+    update(msg? : any): void;
 }
 
-export interface Constructor<T> {
-    new(...args: any[]): T
-}
+export type Constructor<T> = new (...args: any[]) => T;
 
-// An ultra-light weight, super-simple component
-export class ComponentCore implements IComponentCore {
-    static init: (comp: any) => void;
-    static makeClassExtender: <T extends Constructor<{}>, R extends Constructor<{}>>(baseType: T) => (target: R) => void;
-    static extend:  <T>(target: Constructor<T>) => void;
-
-    // @ts-ignore
-    protected renderer: IRenderer;
-    
-    constructor() {
-        ComponentCore.init(this);
-    }
-
-    createRenderer(): IRenderer {
-        return new Renderer(this);
-    }
-
-    view(): any { }
-
-    getRenderRoot() { return this; }
-    render() { this.renderer.render(); }
-    queueRender() { this.renderer.schedule(); }
-    clearRenderQueue() { this.renderer.cancel(); }
-    renderBegin() {}
-    renderEnd() {}
-
-    /// Lifecycle
-
-    connected() { this.queueRender(); }
-    disconnected() { this.clearRenderQueue(); }
-    adopted() { this.queueRender(); }
-    attributeChanged(name: string, prev: string, val: string) { this.queueRender(); }
-
-    /// Lifecycle connections
-
-    connectedCallback() { this.connected() }
-    disconnectedCallback() { this.disconnected() }
-    adoptedCallback() { this.adopted() }
-    attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
-}
-
-ComponentCore.init = function (comp: any) {
-    comp.renderer = comp.createRenderer();
-}
-
-ComponentCore.makeClassExtender = function <T extends Constructor<{}>, R extends Constructor<{}>>(baseType: T) {
-    let baseProto = baseType.prototype;
-    let basePropsCache = Object.getOwnPropertyNames(baseProto);
-    return function (target: R) {
-        let targetProto = target.prototype;
-        for (let x of basePropsCache) {
-            // If a method is already in the target, skip it.
-            if (x in targetProto) continue;
-            targetProto[x] = baseProto[x];
+export function makeComponentCore<T extends Constructor<any>>(Base: T) {
+    return class extends Base implements IComponentCore {
+        renderer: IRenderer;
+        
+        constructor(...args: any[]) {
+            super(...args);
+            this.renderer = this.createRenderer();
         }
+    
+        createRenderer(): IRenderer {
+            return new Renderer(this);
+        }
+    
+        view(): any { }
+    
+        getRenderRoot() { return this; }
+        render() { this.renderer.render(); }
+        queueRender() { this.renderer.schedule(); }
+        clearRenderQueue() { this.renderer.cancel(); }
+        renderBegin() {}
+        renderEnd() {}
+    
+        /// Lifecycle
+    
+        connected() { this.queueRender(); }
+        disconnected() { this.clearRenderQueue(); }
+        adopted() { this.queueRender(); }
+        attributeChanged(name: string, prev: string, val: string) { this.queueRender(); }
+    
+        /// Lifecycle connections
+    
+        connectedCallback() { this.connected() }
+        disconnectedCallback() { this.disconnected() }
+        adoptedCallback() { this.adopted() }
+        attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
+    
+        /// State management
+        update(msg?: any, value?: any) {}  
     }
 }
 
-ComponentCore.extend = ComponentCore.makeClassExtender(ComponentCore);
+export class ComponentCore extends makeComponentCore(Function) { }
 
-// The core function that creates IComponentFn.
-// This takes the base from which IComponentFn has
-// to extend.
-export interface IConstructableComponentCore extends Constructor<IComponentCore>, IComponentCore { }
+// A function that you can pass into ComponentFn
+export type IComponentFn<T extends IComponentCore> = (comp: T) => void;
 
-// A function that you can pass into ComponentFn 
-export type IComponentFn<T> = (comp: T) => void;
-
-export function makeComponentFn<T extends IConstructableComponentCore>(fn: IComponentFn<T>, BaseClass: T): T {
+export function makeComponentFn<F extends IComponentCore, T extends Constructor<F>>(fn: IComponentFn<F>, BaseClass: T): T {
     if (!fn) throw new TypeError("invalid fn");
-    return class extends BaseClass {
+    return class extends (BaseClass as any) {
         connected() {
             // Render immediately instead of queuing so the first
             // view is immediately materialized.
@@ -134,5 +113,9 @@ export function makeComponentFn<T extends IConstructableComponentCore>(fn: IComp
         view(): any {
             return fn(this as any);
         }
-    };
+    } as T;
+}
+
+export function ComponentCoreFn(fn: IComponentFn<ComponentCore>) {
+    return makeComponentFn(fn, ComponentCore);
 }

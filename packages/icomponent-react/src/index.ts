@@ -18,6 +18,6 @@ export class ReactComponent extends Component {
     }
 }
 
-export function ReactComponentFn(fn: IComponentFn<ReactComponent>): ReactComponent {
+export function ReactComponentFn(fn: IComponentFn<ReactComponent>) {
     return makeComponentFn(fn, ReactComponent);
 }

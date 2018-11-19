@@ -13,6 +13,6 @@ export class LitComponent extends Component {
     }
 }
 
-export function LitComponentFn(fn: IComponentFn<LitComponent>): LitComponent {
+export function LitComponentFn(fn: IComponentFn<LitComponent>) {
     return makeComponentFn(fn, LitComponent);
 }

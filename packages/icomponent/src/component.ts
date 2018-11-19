@@ -1,32 +1,25 @@
-import { ComponentCore, makeComponentFn, IComponentFn, Constructor } from "./core";
+import { makeComponentFn, IComponentFn, IComponentCore, makeComponentCore, Constructor } from "./core";
 
-class ComponentImpl extends HTMLElement {
-    static observedAttributes: Array<string> = [];
-
-    constructor() {
-        super();
-        ComponentCore.init(this);
-    }
-
-    attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
-        let val = this.getAttribute(name);
-        if (val == null) return defaultValue;
-        return transform != null ? transform(val) : val;
-    }
+export interface IComponent extends IComponentCore {
+    attr(name: string, defaultValue?: any, transform?: (val: string) => any): void;
 }
 
-interface ComponentStatics {
-    observedAttributes: Array<string>;
+export function makeComponent<T extends Constructor<HTMLElement>>(Base: T) {
+    return class extends makeComponentCore(Base as any) {
+        attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
+            let val = this.getAttribute(name);
+            if (val == null) return defaultValue;
+            return transform != null ? transform(val) : val;
+        }
+    } as T & Constructor<IComponent>;
 }
 
-ComponentCore.extend(ComponentImpl);
-export interface IComponent extends ComponentImpl, ComponentStatics, ComponentCore, Constructor<IComponent> { }
-export const Component: IComponent = ComponentImpl as any;
+export class Component extends makeComponent(HTMLElement) {};
 
 // A functional helper that converts plain function into a 
 // IComponent. Note that this has one additional behavior, 
 // where it passes in the component itself as 
 // arguments to the functions.
-export function ComponentFn(fn: IComponentFn<IComponent>): IComponent {
+export function ComponentFn(fn: IComponentFn<Component>) {
     return makeComponentFn(fn, Component);
 }

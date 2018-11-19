@@ -424,14 +424,18 @@ export interface IComponentCore {
     // Called by attributeChangedCallback. Default action is to queue a 
     // render.
     attributeChanged(name: string, prev: string, val: string): void;
+
+    /// State management
+    update(msg? : any): void;
 }
 ```
 
 Here's the actual impl: 
 
-```ts
-    constructor() {
-        ComponentCore.init(this);
+```ts        
+    constructor(...args: any[]) {
+        super(...args);
+        this.renderer = this.createRenderer();
     }
 
     createRenderer(): IRenderer {
@@ -461,34 +465,25 @@ Here's the actual impl:
     adoptedCallback() { this.adopted() }
     attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
 
+    /// State management
+    update(msg?: any, value?: any) {}  
 ```
 
 
 And now, the `Component`, which is just an `ComponentCore` that inherits `HTMLElement`, with some convenience extras
 
 ```ts
-class ComponentImpl extends HTMLElement {
-    static observedAttributes: Array<string> = [];
-
-    constructor() {
-        super();
-        ComponentCore.init(this);
-    }
-
-    attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
-        let val = this.getAttribute(name);
-        if (val == null) return defaultValue;
-        return transform != null ? transform(val) : val;
-    }
+export function makeComponent<T extends Constructor<HTMLElement>>(Base: T) {
+    return class extends makeComponentCore(Base as any) {
+        attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
+            let val = this.getAttribute(name);
+            if (val == null) return defaultValue;
+            return transform != null ? transform(val) : val;
+        }
+    } as T & Constructor<IComponent>;
 }
 
-interface ComponentStatics {
-    observedAttributes: Array<string>;
-}
-
-ComponentCore.extend(ComponentImpl);
-export interface IComponent extends ComponentImpl, ComponentStatics, ComponentCore, Constructor<IComponent> { }
-export const Component: IComponent = ComponentImpl as any;
+export class Component extends makeComponent(HTMLElement) {};
 ```
 
 And finally the `Renderer`:
