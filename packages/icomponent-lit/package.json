@@ -1,6 +1,6 @@
 {
   "name": "icomponent-lit",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "author": "Prasanna Loganathar <pvl@prasannavl.com>",
   "homepage": "https://github.com/prasannavl/icomponent",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "url": "https://github.com/prasannavl/icomponent/issues"
   },
   "dependencies": {
-    "icomponent": "^6.0.1",
+    "icomponent": "^6.0.2",
     "lit-html": "*"
   },
   "devDependencies": {
