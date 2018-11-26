@@ -1,3 +1,10 @@
+# v6.0.2
+
+- [add] `IComponentStatics`, so `observedAttributes` are typed.
+
+# v6.0.1
+- [fix] `attr` return type as `any`.
+
 # v6.0.0
 
 - Lots of internal changes. Massive simplification, and better mixin architecture, and the core should now support extending any classes like HTMLElement derived classes like HTMLDivElement, etc.

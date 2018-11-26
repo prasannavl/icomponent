@@ -4,6 +4,10 @@ export interface IComponent extends IComponentCore {
     attr(name: string, defaultValue?: any, transform?: (val: string) => any): any;
 }
 
+export interface IComponentStatics {
+    observedAttributes: Array<string>;
+}
+
 export function makeComponent<T extends Constructor<HTMLElement>>(Base: T) {
     return class extends makeComponentCore(Base as any) {
         attr(name: string, defaultValue?: any, transform?: (val: string) => any): any {
@@ -11,10 +15,10 @@ export function makeComponent<T extends Constructor<HTMLElement>>(Base: T) {
             if (val == null) return defaultValue;
             return transform != null ? transform(val) : val;
         }
-    } as T & Constructor<IComponent>;
+    } as T & Constructor<IComponent> & IComponentStatics;
 }
 
-export class Component extends makeComponent(HTMLElement) {};
+export class Component extends makeComponent(HTMLElement) { };
 
 // A functional helper that converts plain function into a 
 // IComponent. Note that this has one additional behavior, 
