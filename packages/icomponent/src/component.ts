@@ -1,12 +1,12 @@
 import { makeComponentFn, IComponentFn, IComponentCore, makeComponentCore, Constructor } from "./core";
 
 export interface IComponent extends IComponentCore {
-    attr(name: string, defaultValue?: any, transform?: (val: string) => any): void;
+    attr(name: string, defaultValue?: any, transform?: (val: string) => any): any;
 }
 
 export function makeComponent<T extends Constructor<HTMLElement>>(Base: T) {
     return class extends makeComponentCore(Base as any) {
-        attr(name: string, defaultValue?: any, transform?: (val: string) => any) {
+        attr(name: string, defaultValue?: any, transform?: (val: string) => any): any {
             let val = this.getAttribute(name);
             if (val == null) return defaultValue;
             return transform != null ? transform(val) : val;
