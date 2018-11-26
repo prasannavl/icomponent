@@ -1,6 +1,4 @@
 node_modules
-dist
 .cache
-yarn-error.log
-lerna-debug.log
+*.log
 packages/*/lib/
