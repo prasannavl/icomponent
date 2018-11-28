@@ -75,6 +75,8 @@ For implementation specific packages, you need to have the correct packages in s
 - [Basic without any adaptors](https://github.com/prasannavl/icomponent#basic-without-any-adaptors)
 - [Basic using localized render](https://github.com/prasannavl/icomponent#basic-using-localized-render)
 - [Functional](https://github.com/prasannavl/icomponent#functional)
+- [Raw component using innerHTML](https://github.com/prasannavl/icomponent#raw-component-using-innerhtml)
+- [Raw component using appendChild/replaceChild](https://github.com/prasannavl/icomponent#)
 - [Timer](https://github.com/prasannavl/icomponent#timer)
 - [Simple state management](https://github.com/prasannavl/icomponent#simple-state-management)
 
@@ -227,7 +229,6 @@ class Nav extends LitHtmlComponent {
 }
 ```
 
-
 #### Functional
 
 `ComponentFn` provides functional semantics. Functional components also automatically pass along the component itself as the argument.
@@ -250,6 +251,28 @@ customElements.define("hello-component", ComponentFn(nameIt));
 ```
 
 Use the appropriate `ComponentFn` like `LitComponentFn`, `ReactComponentFn` etc directly if you use the supported adapters.
+
+#### Raw component using innerHTML
+
+```js
+import { Component, ComponentRenderer } from "icomponent";
+
+export class Hello extends Component {
+    createRenderer() {
+        return new ComponentRenderer(this, () => { this.innerHTML = this.view() });
+    }
+
+    view() {
+        return "<div>Hello there!</div>"
+    }
+}
+
+customElements.define("my-hello", Hello);
+```
+
+#### Raw component using appendChild/replaceChild
+
+TODO
 
 #### Timer
 
