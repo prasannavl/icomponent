@@ -69,14 +69,14 @@ For implementation specific packages, you need to have the correct packages in s
 
 ## Examples
 
+- [Raw component using innerHTML](https://github.com/prasannavl/icomponent#raw-component-using-innerhtml)
+- [Raw component using appendChild/replaceChild](https://github.com/prasannavl/icomponent#raw-component-using-appendchildreplacechild)
 - [Basic](https://github.com/prasannavl/icomponent#basic)
 - [Basic using react](https://github.com/prasannavl/icomponent#basic-using-react)
 - [Converting an existing react component into a web-component](https://github.com/prasannavl/icomponent#converting-an-existing-react-component-into-a-web-component)
 - [Basic without any adaptors](https://github.com/prasannavl/icomponent#basic-without-any-adaptors)
 - [Basic using localized render](https://github.com/prasannavl/icomponent#basic-using-localized-render)
 - [Functional](https://github.com/prasannavl/icomponent#functional)
-- [Raw component using innerHTML](https://github.com/prasannavl/icomponent#raw-component-using-innerhtml)
-- [Raw component using appendChild/replaceChild](https://github.com/prasannavl/icomponent#raw-component-using-appendchildreplacechild)
 - [Timer](https://github.com/prasannavl/icomponent#timer)
 - [Simple state management](https://github.com/prasannavl/icomponent#simple-state-management)
 
@@ -93,7 +93,60 @@ icomponent provides the web component model. So, you can easily do things like t
 
 <!-- ##### -->
 
+#### Raw component using innerHTML
+
+While used very rarely, let's start with the raw way to do things. This does come in handy, to write low overhead static components, though I probably would use the append/replaceChild instead below.
+
+```js
+import { Component, ComponentRenderer } from "icomponent";
+
+export class Hello extends Component {
+    createRenderer() {
+        return new ComponentRenderer(this, () => { this.innerHTML = this.view() });
+    }
+
+    view() {
+        return "<div>Hello there!</div>"
+    }
+}
+
+customElements.define("my-hello", Hello);
+```
+
+#### Raw component using appendChild/replaceChild
+
+A little nicer, programmatic way instead of innerHTML.
+
+```js
+import { Component, ComponentRenderer } from "icomponent";
+
+export class Hello extends Component {
+    createRenderer() {
+        return new ComponentRenderer(this, () => this._render());
+    }
+   
+    _render() {
+        let v = this.view();
+        this.childElementCount > 0 ?
+            this.replaceChild(v, this.firstElementChild!) :
+            this.appendChild(v);
+    }
+
+    view() {
+        let el = document.createElement("div");
+        el.textContent = "Hello there!";
+        return el;
+    }
+}
+
+customElements.define("my-hello", Hello);
+```
+
+One could also potentially use a `NoopRenderer`, to completely bypass the rendering and control everything manually. 
+
 #### Basic
+
+Now to something more useful that can be used day-to-day with `lit-html` or `hyper-html`. 
 
 Using `icomponent-lit` or `icomponent-hyper`
 
@@ -251,53 +304,6 @@ customElements.define("hello-component", ComponentFn(nameIt));
 ```
 
 Use the appropriate `ComponentFn` like `LitComponentFn`, `ReactComponentFn` etc directly if you use the supported adapters.
-
-#### Raw component using innerHTML
-
-```js
-import { Component, ComponentRenderer } from "icomponent";
-
-export class Hello extends Component {
-    createRenderer() {
-        return new ComponentRenderer(this, () => { this.innerHTML = this.view() });
-    }
-
-    view() {
-        return "<div>Hello there!</div>"
-    }
-}
-
-customElements.define("my-hello", Hello);
-```
-
-#### Raw component using appendChild/replaceChild
-
-```js
-import { Component, ComponentRenderer } from "icomponent";
-
-export class Hello extends Component {
-    createRenderer() {
-        return new ComponentRenderer(this, () => this._render());
-    }
-   
-    _render() {
-        let v = this.view();
-        this.childElementCount > 0 ?
-            this.replaceChild(v, this.firstElementChild!) :
-            this.appendChild(v);
-    }
-
-    view() {
-        let el = document.createElement("div");
-        el.textContent = "Hello there!";
-        return el;
-    }
-}
-
-customElements.define("my-hello", Hello);
-```
-
-You could also potentially use a `NoopRenderer` and control items all by yourself. 
 
 #### Timer
 
