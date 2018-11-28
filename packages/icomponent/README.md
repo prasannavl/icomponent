@@ -76,7 +76,7 @@ For implementation specific packages, you need to have the correct packages in s
 - [Basic using localized render](https://github.com/prasannavl/icomponent#basic-using-localized-render)
 - [Functional](https://github.com/prasannavl/icomponent#functional)
 - [Raw component using innerHTML](https://github.com/prasannavl/icomponent#raw-component-using-innerhtml)
-- [Raw component using appendChild/replaceChild](https://github.com/prasannavl/icomponent#)
+- [Raw component using appendChild/replaceChild](https://github.com/prasannavl/icomponent#raw-component-using-appendchildreplacechild)
 - [Timer](https://github.com/prasannavl/icomponent#timer)
 - [Simple state management](https://github.com/prasannavl/icomponent#simple-state-management)
 
@@ -272,7 +272,32 @@ customElements.define("my-hello", Hello);
 
 #### Raw component using appendChild/replaceChild
 
-TODO
+```js
+import { Component, ComponentRenderer } from "icomponent";
+
+export class Hello extends Component {
+    createRenderer() {
+        return new ComponentRenderer(this, () => this._render());
+    }
+   
+    _render() {
+        let v = this.view();
+        this.childElementCount > 0 ?
+            this.replaceChild(v, this.firstElementChild!) :
+            this.appendChild(v);
+    }
+
+    view() {
+        let el = document.createElement("div");
+        el.textContent = "Hello there!";
+        return el;
+    }
+}
+
+customElements.define("my-hello", Hello);
+```
+
+You could also potentially use a `NoopRenderer` and control items all by yourself. 
 
 #### Timer
 
