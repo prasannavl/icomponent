@@ -80,7 +80,7 @@ export function makeComponentCore<T extends Constructor<any>>(Base: T) {
     
         /// Lifecycle
     
-        connected() { this.queueRender(); }
+        connected() { this.render(); }
         disconnected() { this.clearRenderQueue(); }
         adopted() { this.queueRender(); }
         attributeChanged(name: string, prev: string, val: string) { this.queueRender(); }

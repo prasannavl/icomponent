@@ -1,3 +1,7 @@
+# v6.1.0
+
+- [change] render immediately on `connected`, instead of `queueRender`, to have more intuitive and predictable behavior. One can always override connected and change the behavior.
+
 # v6.0.2
 
 - [add] `IComponentStatics`, so `observedAttributes` are typed.

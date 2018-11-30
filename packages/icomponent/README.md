@@ -453,7 +453,7 @@ Here's the actual impl:
 
     /// Lifecycle
 
-    connected() { this.queueRender(); }
+    connected() { this.render(); }
     disconnected() { this.clearRenderQueue(); }
     adopted() { this.queueRender(); }
     attributeChanged(name: string, prev: string, val: string) { this.queueRender(); }
