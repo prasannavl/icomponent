@@ -601,15 +601,7 @@ One could argue that it could have a sensible default like setting innerHTML, or
 
 - **`attributesChanged` not fired**
 
-Set `YourComponent.observedAttributes = ["my", "attrs"];`, since Custom Elements are required to set that static property as per the DOM specifications. Please take a look at the custom elements API spec for more information. 
-
-- **Element not yet rendered inside the `connected` method**
-
-The connected callback does not imply loaded. It just implies that the component is now in the DOM tree. So, if a render
-is desired before any other action is performed, simply call `render` which will immediately finish rendering. 
-The default action of connected is to `queueRender`, so that a render is performed, but the component will not be loaded by the time connected method is called.
-
-This provides the advantage of being lazy, and having the flexibility to act both ways.
+Set `YourComponent.observedAttributes = ["my", "attrs"];`, since Custom Elements are required to set that static property as per the DOM specifications. Please take a look at the custom elements API spec for more information.
 
 - **Uncaught TypeError: Class constructor Component cannot be invoked without 'new'**
 
