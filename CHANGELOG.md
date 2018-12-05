@@ -1,3 +1,8 @@
+# v6.2.0
+
+- [add] `tagName` to `IComponentStatics`.
+- [change] `observedAttributes` is now optional in `IComponentStatics`.
+
 # v6.1.0
 
 - [change] render immediately on `connected`, instead of `queueRender`, to have more intuitive and predictable behavior. One can always override connected and change the behavior.

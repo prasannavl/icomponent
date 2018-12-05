@@ -5,7 +5,8 @@ export interface IComponent extends IComponentCore {
 }
 
 export interface IComponentStatics {
-    observedAttributes: Array<string>;
+    observedAttributes?: Array<string>;
+    tagName?: string;
 }
 
 export function makeComponent<T extends Constructor<HTMLElement>>(Base: T) {
