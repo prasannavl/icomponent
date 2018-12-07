@@ -480,7 +480,7 @@ export interface IComponentCore {
     attributeChanged(name: string, prev: string, val: string): void;
 
     /// State management
-    update(msg? : any): void;
+    update(...args: any[]): void;
 }
 ```
 
@@ -520,7 +520,7 @@ Here's the actual impl:
     attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
 
     /// State management
-    update(msg?: any, value?: any) {}  
+    update(...args: any[]) { this.queueRender() }
 ```
 
 

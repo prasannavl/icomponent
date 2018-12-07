@@ -51,7 +51,7 @@ export interface IComponentCore {
     attributeChanged(name: string, prev: string, val: string): void;
 
     /// State management
-    update(msg? : any): void;
+    update(...args: any[]): void;
 }
 
 export type Constructor<T> = new (...args: any[]) => T;
@@ -93,7 +93,7 @@ export function makeComponentCore<T extends Constructor<any>>(Base: T) {
         attributeChangedCallback(name: string, prev: string, val: string) { this.attributeChanged(name, prev, val) }
     
         /// State management
-        update(msg?: any, value?: any) {}  
+        update(...args: any[]) { this.queueRender() }
     }
 }
 

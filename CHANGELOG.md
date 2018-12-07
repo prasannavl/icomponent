@@ -1,3 +1,6 @@
+# v6.3.0
+- [change] update now has this signature: `update(...args: any[])`, and default impl does a `queueRender` to be more provide more intuitive behaviour. 
+
 # v6.2.0
 
 - [add] `tagName` to `IComponentStatics`.
