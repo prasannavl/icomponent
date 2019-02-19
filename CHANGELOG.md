@@ -1,3 +1,6 @@
+# v6.4.0
+- [add] add `pkg.module` as helpful hint for compilers.
+
 # v6.3.0
 - [change] update now has this signature: `update(...args: any[])`, and default impl does a `queueRender` to be more provide more intuitive behaviour. 
 

@@ -2,6 +2,7 @@
   "name": "icomponent",
   "version": "6.3.2",
   "main": "lib/index.js",
+  "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "author": "Prasanna V. Loganathar <pvl@prasannavl.com> (https://www.prasannavl.com)",
   "license": "MIT",
