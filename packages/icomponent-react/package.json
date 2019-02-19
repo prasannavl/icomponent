@@ -1,6 +1,6 @@
 {
   "name": "icomponent-react",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "author": "Prasanna Loganathar <pvl@prasannavl.com>",
   "homepage": "https://github.com/prasannavl/icomponent",
   "license": "MIT",
@@ -23,7 +23,7 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
-    "icomponent": "^6.3.0",
+    "icomponent": "^6.3.1",
     "react": "*",
     "react-dom": "*"
   }
