@@ -1,6 +1,6 @@
 {
   "name": "icomponent-hyper",
-  "version": "6.3.2",
+  "version": "6.4.0",
   "author": "Prasanna Loganathar <pvl@prasannavl.com>",
   "homepage": "https://github.com/prasannavl/icomponent",
   "license": "MIT",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "hyperhtml": "*",
-    "icomponent": "^6.3.2"
+    "icomponent": "^6.4.0"
   },
   "devDependencies": {
     "typescript": "^3.1.6"

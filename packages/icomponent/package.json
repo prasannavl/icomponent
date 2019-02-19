@@ -1,6 +1,6 @@
 {
   "name": "icomponent",
-  "version": "6.3.2",
+  "version": "6.4.0",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
